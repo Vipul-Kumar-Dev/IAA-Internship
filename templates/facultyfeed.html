@@ -80,24 +80,23 @@
         }
 
         .heading h1 {
-            font-size: 3rem;
+            font-size: 6rem;
             padding: 20px;
             font-family: 'Ubuntu', sans-serif;
-            text-align: center;
+            margin: 8rem 0rem -23rem 5rem;
+            text-shadow: 0px 7px 11px rgba(0,85,166,0.71);
         }
 
         .feedback-container {
             background: linear-gradient(to right, #0055a6, #b2e8ff);
             padding: 2rem;
             border-radius: 12px;
-            width: 100%;
-            max-width: 50%;
+            max-width: 40%;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: center;
             flex-direction: column;
-            gap: 1.5rem;
-            margin: 0 auto;
+            margin: 0rem 10rem 0rem auto;
         }
 
         .feedback-container h2 {
@@ -120,7 +119,7 @@
 
         .form-group input,
         .form-group textarea {
-            width: 46.5rem;
+            width: 30rem;
             padding: 0.8rem;
             border: none;
             border-radius: 6px;
@@ -298,22 +297,23 @@
 
         .footer {
             position: relative;
+            display: flex;
+            flex-direction: row;
             width: 100%;
             background-color: black;
             color: white;
             padding: 20px 0;
             text-align: center;
             clear: both;
+            margin-top: 5rem;
         }
-        
 
-        .footer-logo {
+
+        .footer-logo img {
             font-size: 36px;
-            font-weight: bold;
-        }
-
-        .footer-logo span {
-            color: yellow;
+            display: flex;
+            padding-left: 10rem;
+            width: 8rem;
         }
 
         .footer-section {
@@ -334,7 +334,10 @@
         .quick-links a {
             text-decoration: none;
             color: white;
+            display: flex;
             transition: 0.3s;
+            flex-direction: row;
+            padding-top: 2rem;
         }
 
         .quick-links a:hover {
@@ -342,9 +345,11 @@
         }
 
         .map iframe {
-            width: 100%;
-            height: 150px;
+            width: 38%;
+            height: 16rem;
             border: none;
+            display: flex;
+            padding-left: 10.5rem;
         }
 
         .subscribe {
@@ -375,7 +380,8 @@
             background: black;
             color: white;
             text-align: center;
-            padding: 10px;
+            padding-top: 30px;
+            padding-bottom: 10px;
         }
 
         .container {
@@ -383,13 +389,19 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        
+
         .content {
-            flex: 1; /* Pushes footer to the bottom */
+            flex: 1;
+            /* Pushes footer to the bottom */
         }
 
         .footer {
             z-index: 10;
+        }
+
+        .footer-section h2 {
+            display: flex;
+            justify-content: left;
         }
     </style>
 </head>
@@ -410,138 +422,139 @@
     </header>
     <div class="container">
         <div class="heading">
-            <h1>Faculty Feedback</h1>
+            <h1>Faculty<br>Feedback</h1>
+        </div>
+        <div class="feedback-container">
+            <h2>Feedback Form</h2>
+            <form action="/submit-feedback" method="post">
+                <!-- Your Name -->
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+    
+                <!-- Faculty Name -->
+                <div class="form-group">
+                    <label for="faculty">Faculty Name:</label>
+                    <input type="text" id="faculty" name="faculty" placeholder="Enter faculty name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label>Rate Us:</label>
+                    <div class="rating">
+                        <input value="5" name="rating" id="star5" type="radio" />
+                        <label title="5 stars" for="star5">
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgOne">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgTwo">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <div class="ombre"></div>
+                        </label>
+    
+                        <input value="4" name="rating" id="star4" type="radio" />
+                        <label title="4 stars" for="star4">
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgOne">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgTwo">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <div class="ombre"></div>
+                        </label>
+    
+                        <input value="3" name="rating" id="star3" type="radio" />
+                        <label title="3 stars" for="star3">
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgOne">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgTwo">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <div class="ombre"></div>
+                        </label>
+    
+                        <input value="2" name="rating" id="star2" type="radio" />
+                        <label title="2 stars" for="star2">
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgOne">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgTwo">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <div class="ombre"></div>
+                        </label>
+    
+                        <input value="1" name="rating" id="star1" type="radio" />
+                        <label title="1 star" for="star1">
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgOne">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
+                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
+                                class="svgTwo">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                            <div class="ombre"></div>
+                        </label>
+                    </div>
+    
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="comments">Description:</label>
+                        <textarea id="comments" name="comments" placeholder="Share your feedback here..."
+                            rows="4"></textarea>
+                    </div>
+    
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn">Submit Feedback →</button>
+            </form>
         </div>
     </div>
-    <div class="feedback-container">
-        <h2>Feedback Form</h2>
-        <form action="/submit-feedback" method="post">
-            <!-- Your Name -->
-            <div class="form-group">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-            </div>
-
-            <!-- Faculty Name -->
-            <div class="form-group">
-                <label for="faculty">Faculty Name:</label>
-                <input type="text" id="faculty" name="faculty" placeholder="Enter faculty name" required>
-            </div>
-
-            <div class="form-group">
-                <label>Rate Us:</label>
-                <div class="rating">
-                    <input value="5" name="rating" id="star5" type="radio" />
-                    <label title="5 stars" for="star5">
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgOne">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgTwo">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <div class="ombre"></div>
-                    </label>
-
-                    <input value="4" name="rating" id="star4" type="radio" />
-                    <label title="4 stars" for="star4">
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgOne">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgTwo">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <div class="ombre"></div>
-                    </label>
-
-                    <input value="3" name="rating" id="star3" type="radio" />
-                    <label title="3 stars" for="star3">
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgOne">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgTwo">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <div class="ombre"></div>
-                    </label>
-
-                    <input value="2" name="rating" id="star2" type="radio" />
-                    <label title="2 stars" for="star2">
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgOne">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgTwo">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <div class="ombre"></div>
-                    </label>
-
-                    <input value="1" name="rating" id="star1" type="radio" />
-                    <label title="1 star" for="star1">
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgOne">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                            fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                            class="svgTwo">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
-                        </svg>
-                        <div class="ombre"></div>
-                    </label>
-                </div>
-
-                <!-- Description -->
-                <div class="form-group">
-                    <label for="comments">Description:</label>
-                    <textarea id="comments" name="comments" placeholder="Share your feedback here..."
-                        rows="4"></textarea>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn">Submit Feedback →</button>
-        </form>
-    </div>
+    
 </body>
 <footer class="footer">
     <div class="footer-section">
-        <div class="footer-logo">i<span>aa</span></div>
+        <div class="footer-logo"><img src="{% static 'iialogo-login.png' %}"></div>
         <div class="map">
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923527956!2d77.06889981416216!3d28.52758200000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1c5c5b09b6ab%3A0x7a39c3c78b8c8a68!2sIndian%20Aviation%20Academy!5e0!3m2!1sen!2sin!4v1645242994595"
@@ -550,6 +563,7 @@
     </div>
 
     <div class="footer-section">
+        <h2>Quick Links</h2>
         <ul class="quick-links">
             <li><a href="#">Contact Us</a></li>
             <li><a href="#">Privacy Policy</a></li>
