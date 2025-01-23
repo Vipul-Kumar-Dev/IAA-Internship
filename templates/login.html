@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAA</title>
+    <link rel="icon" href="{% static 'img_logo.png' %}" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+            background-color: black;
+            /* Remove direct background image here */
+            font-family: Poppins-Regular, sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url("{% static 'back.jpg' %}") no-repeat;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+            /* Reduced duration */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out;
+            /* Slide-up effect for elements */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .content,
+        button {
+            opacity: 1;
+            animation: slideUp 1s ease-out;
+        }
+
+        .container {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            transition: all 1s ease;
+            margin: -27% 21% 0% 0%;
+        }
+
+        .form .form_front {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            align-items: center;
+            gap: 20px;
+            backface-visibility: hidden;
+            padding: 65px 45px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6),
+                0px 0px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .form .form_back {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            backface-visibility: hidden;
+            transform: rotateY(-180deg);
+            padding: 65px 45px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6),
+                0px 0px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .form_details {
+            font-size: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            color: black;
+        }
+
+        .input {
+            width: 245px;
+            min-height: 45px;
+            color: #ffc70f;
+            outline: none;
+            transition: 0.35s;
+            padding: 0px 7px;
+            background-color: #0055a6;
+            border-radius: 6px;
+            border: 2px solid #212121;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                1px 1px 10px rgba(255, 255, 255, 0.6);
+        }
+
+        .input::placeholder {
+            color: white;
+        }
+
+        .input:focus.input::placeholder {
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .input:focus {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                1px 1px 10px rgba(255, 255, 255, 0.6),
+                inset 2px 2px 10px rgba(0, 0, 0, 1),
+                inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            padding: 10px 35px;
+            cursor: pointer;
+            background-color: #ffc70f;
+            border-radius: 6px;
+            border: 2px solid #212121;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                1px 1px 10px rgba(255, 255, 255, 0.6);
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.35s;
+            margin: 0rem 0rem 0rem 4.5rem;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #0055a6;
+            color: white;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                1px 1px 10px rgba(255, 255, 255, 0.6),
+                inset 2px 2px 10px rgba(0, 0, 0, 1),
+                inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn:focus {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                1px 1px 10px rgba(255, 255, 255, 0.6),
+                inset 2px 2px 10px rgba(0, 0, 0, 1),
+                inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .form .switch {
+            font-size: 13px;
+            color: black;
+        }
+
+        .form .switch .signup_tog {
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .container #signup_toggle {
+            display: none;
+        }
+
+        .container #signup_toggle:checked+.form {
+            transform: rotateY(-180deg);
+        }
+
+        .iaa img {
+            width: 7.8%;
+            padding: 10rem 0rem 0rem 18.1rem;
+        }
+
+        .welcomecontainer {
+            font-size: 15px;
+            display: flex;
+            flex-direction: column;
+            padding-left: 18rem;
+            gap: 3px;
+            letter-spacing: 1px;
+        }
+
+        .welcomecontainer h1 {
+            color: white;
+        }
+
+        .welcomecontainer h2 {
+            color: #ffc70f;
+            font-size: 28px;
+            text-shadow: 0px 6px 25px black;
+        }
+
+        .welcomecontainer h3 {
+            font-size: 1.714em !important;
+            line-height: 1.45em;
+            color: white;
+            font-weight: 100;
+        }
+
+        .welcomecontainer p {
+            color: white;
+            padding-bottom: 3rem;
+        }
+
+        .welcomecontainer h4 {
+            border-top: 1px solid rgb(179, 179, 179);
+            padding: 24px 0;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            font-weight: 300;
+            color: #666;
+            width: 42%;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            color: green;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error,
+        .message.warning,
+        .message.info {
+            color: red;
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="fade-in">
+    <div class="iaa">
+        <img src="{% static 'iialogo-login.png' %}" class="slide-up">
+    </div>
+    <div class="welcomecontainer slide-up">
+        <h1>WELCOME TO</h1>
+        <h2>INDIAN AVIATION ACADEMY</h2><br>
+        <h3>Nurturing Aviation for the Future</h3>
+        <p>Indian Aviation Academy (IAA) is a premier institute for Education,<br>
+            Training, and Research in Aviation. It functions as joint training<br>
+            academy of Airports Authority of India (AAI),Bureau of Civil Aviation<br>
+            Security(BCAS) and Directorate General of Civil Aviation(DGCA).</p>
+        <h4>Copyright 2025 | IAA</h4>
+    </div>
+    <div class="container slide-up">
+        <input type="checkbox" id="signup_toggle">
+        <div class="form">
+            <div class="form_front">
+                <div class="form_details slide-up">Login</div>
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input placeholder="Username" class="input slide-up" type="text" name="username" required><br><br>
+                    <input placeholder="Password" class="input slide-up" type="password" name="password"
+                        required><br><br>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                <span class="switch slide-up">Don't have an account?
+                    <label class="signup_tog" for="signup_toggle">Sign Up</label>
+                </span>
+            </div>
+
+            <div class="form_back">
+                <div class="form_details">Sign Up</div>
+                <form method="POST" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    <input placeholder="Firstname" class="input" type="text" name="firstname" required><br><br>
+                    <input placeholder="Email Address" class="input" type="email" name="email" required><br><br>
+                    <input placeholder="Username" class="input" type="text" name="username" required><br><br>
+                    <input placeholder="Password" class="input" type="password" name="password" required><br><br>
+                    <input placeholder="Confirm Password" class="input" type="password" name="confirm_password"
+                        required><br><br>
+                    <button type="submit" class="btn">Signup</button><br><br>
+                </form>
+                <span class="switch">Already have an account?
+                    <label class="signup_tog" for="signup_toggle">Sign In</label>
+                </span>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+<script>
+</script>
+
+</html>

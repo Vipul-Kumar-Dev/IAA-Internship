@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure FeedBack</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 1rem 0rem 0rem -32.5rem;
+        }
+
+        header p {
+            margin: 0rem 0rem 0rem -32.5rem;
+            font-size: 14px;
+        }
+
+        .logos img {
+            height: 80px;
+            padding-left: 1rem;
+        }
+
+        header img {
+            padding-left: 3.5rem;
+        }
+
+        .logos {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .heading h1{
+            font-size: 3rem;
+            padding-top: 20px;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Logo Section -->
+        <img src="{% static 'img_logo.png' %}" class="slide-up">
+        <div class="slide-up">
+            <h1>Indian Aviation Academy</h1>
+            <p><b>Nurturing Aviation for the Future</b></p>
+        </div>
+        <div class="logos">
+            <img src="{% static 'logo1.jpg' %}" class="slide-up">
+            <img src="{% static 'logo2.jpg' %}" style="width: 100px; height: 85px;" class="slide-up">
+            <img src="{% static 'logo3.jpg' %}" class="slide-up" style="padding-right: 3rem;">
+        </div>
+    </header>
+    <div class="container">
+        <div class="heading">
+            <h1>Infrastructure Feedback</h1>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAA | Training Feedback System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 1rem 0rem 0rem -32.5rem;
+        }
+
+        header p {
+            margin: 0rem 0rem 0rem -32.5rem;
+            font-size: 14px;
+        }
+
+        .logos img {
+            height: 80px;
+            padding-left: 1rem;
+        }
+
+        header img {
+            padding-left: 3.5rem;
+        }
+
+        .logos {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .container .heading h1 {
+            font-size: 3rem;
+            padding-top: 20px;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+        }
+
+        .card {
+            position: relative;
+            flex: 0 0 calc(90%);
+            margin-bottom: 20px;
+            display: flex;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 32px;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            color: black;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            padding-left: 2rem;
+        }
+
+        .content .heading {
+            font-weight: 700;
+            font-size: 32px;
+
+        }
+
+        .content .para {
+            line-height: 1.5;
+        }
+
+        .content .btn {
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            z-index: -1;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .card:hover::before {
+            width: 100%;
+        }
+
+        .card:hover {
+            box-shadow: none;
+        }
+
+        .card:hover .btn {
+            color: #212121;
+            outline: 2px solid black;
+            background: #e8e8e8;
+        }
+
+        .content .btn:hover {
+            outline: 2px solid #e8e8e8;
+            background: transparent;
+            color: #e8e8e8;
+        }
+
+        .content .btn:active {
+            box-shadow: none;
+        }
+
+        .container .feed {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow cards to wrap to the next row */
+            justify-content: space-evenly;
+            gap: 20px;
+        }
+
+        /* From Uiverse.io by vinodjangid07 */
+        .Btn {
+            display: flex;
+            margin: -2rem 1rem 1rem auto;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: .3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background-color: #0055a6;
+        }
+
+        /* plus sign */
+        .sign {
+            width: 100%;
+            transition-duration: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign svg {
+            width: 17px;
+        }
+
+        .sign svg path {
+            fill: white;
+        }
+
+        /* text */
+        .text {
+            position: absolute;
+            right: -5%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: .3s;
+        }
+
+        /* hover effect on button width */
+        .Btn:hover {
+            width: 125px;
+            border-radius: 40px;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: .3s;
+            padding-left: 20px;
+        }
+
+        /* hover effect button's text */
+        .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: .3s;
+            padding-right: 10px;
+        }
+
+        /* button click effect*/
+        .Btn:active {
+            transform: translate(2px, 2px);
+        }
+
+        .welcome h2 {
+            margin-top: -1.5rem;
+            margin-left: 1rem;
+            display: flex;
+        }
+
+        .Btn .text a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .message.success {
+            margin: -2.2rem 69.5rem 0rem 12rem;
+            color: green;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .message.fade-out {
+            opacity: 0;
+        }
+
+        .card .content button a {
+            text-decoration: none;
+            color: white;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card:hover button a {
+            color: #212121;
+            text-align: center;
+            background: #e8e8e8 cover;
+        }
+
+        .content button a:hover {
+            background: transparent cover;
+            color: #e8e8e8;
+        }
+
+        .footer {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            background-color: black;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            clear: both;
+        }
+
+
+        .footer-logo img {
+            font-size: 36px;
+            display: flex;
+            padding-left: 10rem;
+            width: 8rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+        }
+
+        .quick-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quick-links li {
+            margin: 10px 0;
+        }
+
+        .quick-links a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            transition: 0.3s;
+            flex-direction: row;
+            padding-top: 2rem;
+        }
+
+        .quick-links a:hover {
+            color: yellow;
+        }
+
+        .map iframe {
+            width: 38%;
+            height: 16rem;
+            border: none;
+            display: flex;
+            padding-left: 10.5rem;
+        }
+
+        .subscribe {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            padding: 5px;
+            overflow: hidden;
+        }
+
+        .subscribe input {
+            border: none;
+            padding: 10px;
+            flex: 1;
+            outline: none;
+        }
+
+        .subscribe button {
+            background: yellow;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .footer-bottom {
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            /* Pushes footer to the bottom */
+        }
+
+        .footer {
+            z-index: 10;
+        }
+
+        .footer-section h2 {
+            display: flex;
+            justify-content: left;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Logo Section -->
+        <img src="{% static 'img_logo.png' %}" class="slide-up">
+        <div class="slide-up">
+            <h1>Indian Aviation Academy</h1>
+            <p><b>Nurturing Aviation for the Future</b></p>
+        </div>
+        <div class="logos">
+            <img src="{% static 'logo1.jpg' %}" class="slide-up">
+            <img src="{% static 'logo2.jpg' %}" style="width: 100px; height: 85px;" class="slide-up">
+            <img src="{% static 'logo3.jpg' %}" class="slide-up" style="padding-right: 3rem;">
+        </div>
+    </header>
+    <div class="container">
+        <div class="heading">
+            <h1>FeedBack</h1>
+        </div>
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="welcome">
+            <h2>Welcome, {{ firstname }}!</h2>
+        </div>
+        <button class="Btn">
+            <div class="sign"><svg viewBox="0 0 512 512">
+                    <path
+                        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                    </path>
+                </svg></div>
+            <div class="text"><a href="{% url 'logout' %}">Logout</a></div>
+        </button>
+        <div class="feed">
+            <div class="card">
+                <div class="content">
+                    <p class="heading">Faculties
+                    </p>
+                    <p class="para">
+                        Share your experience and feedback about our dedicated faculty members. Your insights help us
+                        recognize excellence and improve the learning experience.
+                    </p>
+                    <button class="btn"><a href="{% url 'facultyfeed' %}">FeedBack →</a></button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <p class="heading">Infrastructure
+                    </p>
+                    <p class="para">
+                        Let us know your thoughts on our state-of-the-art facilities and infrastructure. Your feedback
+                        ensures we continue to provide the best environment for learning.
+                    </p>
+                    <button class="btn"><a href="{% url 'infrafeed' %}">FeedBack →</a></button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <p class="heading">Course
+                    </p>
+                    <p class="para">
+                        Provide feedback on the courses offered. Your input will help us refine our curriculum and
+                        better cater to your learning needs.
+                    </p>
+                    <button class="btn"><a href="{% url 'coursefeed' %}">FeedBack →</a></button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <p class="heading">Catering
+                    </p>
+                    <p class="para">
+                        Share your feedback on the catering services provided on campus. Your suggestions help us
+                        improve quality and service for everyone.
+                    </p>
+                    <button class="btn"><a href="{% url 'cateringfeed' %}">FeedBack →</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    setTimeout(function () {
+        const messages = document.querySelectorAll('.message');
+        messages.forEach(function (message) {
+            message.classList.add('fade-out');
+        });
+    }, 2000);
+</script>
+<footer class="footer">
+    <div class="footer-section">
+        <div class="footer-logo"><img src="{% static 'iialogo-login.png' %}"></div>
+        <div class="map">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.3392222441985!2d77.13773461508026!3d28.52952188245859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1c72fb860727%3A0xa793309dbc24f52!2sIndian+Aviation+Academy!5e0!3m2!1sen!2sin!4v1564206883347!5m2!1sen!2sin"
+                allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <h2>Quick Links</h2>
+        <ul class="quick-links">
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+        <ul class="quick-links">
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Website Policies</a></li>
+        </ul>
+    </div>
+</footer>
+
+<div class="footer-bottom">
+    Copyright © 2024. All Rights Reserved by Indian Aviation Academy. Last Updated: 08 Apr 2021.
+</div>
+
+</html>

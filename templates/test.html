@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Example</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .footer {
+            background-color: #222;
+            color: white;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .footer-logo {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .footer-logo span {
+            color: yellow;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+        }
+
+        .quick-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quick-links li {
+            margin: 10px 0;
+        }
+
+        .quick-links a {
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .quick-links a:hover {
+            color: yellow;
+        }
+
+        .map iframe {
+            width: 100%;
+            height: 150px;
+            border: none;
+        }
+
+        .subscribe {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            padding: 5px;
+            overflow: hidden;
+        }
+
+        .subscribe input {
+            border: none;
+            padding: 10px;
+            flex: 1;
+            outline: none;
+        }
+
+        .subscribe button {
+            background: yellow;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .footer-bottom {
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: yellow;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <footer class="footer">
+        <div class="footer-section">
+            <div class="footer-logo">i<span>aa</span></div>
+            <div class="map">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923527956!2d77.06889981416216!3d28.52758200000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1c5c5b09b6ab%3A0x7a39c3c78b8c8a68!2sIndian%20Aviation%20Academy!5e0!3m2!1sen!2sin!4v1645242994595"
+                    allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <ul class="quick-links">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Nearby Hotels</a></li>
+                <li><a href="#">RTI</a></li>
+                <li><a href="#">Faculty Registration</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+                <li><a href="#">Website Policies</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <div class="subscribe">
+                <input type="email" placeholder="Please enter email address.">
+                <button>➜</button>
+            </div>
+        </div>
+    </footer>
+
+    <div class="footer-bottom">
+        Copyright © 2024. All Rights Reserved by Indian Aviation Academy. Last Updated: 08 Apr 2021.
+    </div>
+
+    <div class="top-btn">⬆</div>
+
+</body>
+</html>

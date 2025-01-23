@@ -1,0 +1,326 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAA | Nurturing Aviation for the Future</title>
+    <link rel="icon" href="{% static 'img_logo.png' %}" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            overflow: hidden;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out; /* Reduced duration */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out; /* Slide-up effect for elements */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .content, button {
+            opacity: 1;
+            animation: slideUp 1s ease-out;
+        }
+
+        header {
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 1rem 53.5rem 0rem 0rem;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .logos img {
+            height: 80px;
+            margin: 0px 45px 0px -35px;
+        }
+
+        .container {
+            background: url(/static/bg_welcome.png);
+            background-size: cover;
+            background-position: center;
+            min-height: calc(100vh - 100px);
+            padding: 4rem 0rem 0rem 0rem;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .content {
+            background: white;
+            padding: 30px 20px;
+            /* Ensures proper spacing inside the box */
+            border-radius: 20px;
+            box-shadow: 0 0 6px 3px #dacfcf;
+            height: 250px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Aligns content within the box */
+            text-align: center;
+        }
+
+        .content h2 {
+            margin-bottom: 20px;
+        }
+
+        .description p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-family: 'Ubuntu', sans-serif;
+            margin-bottom: 5px;
+            line-height: 2.0;
+            font-size: 17px;
+        }
+
+        .language {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .welcome {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.7rem;
+        }
+
+        .welcome .one {
+            /* Removes any unwanted spacing */
+            padding: 0;
+            /* Removes any internal padding */
+            line-height: 1;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .welcome .two {
+            margin: 1rem 0rem 2rem 0rem;
+            /* Removes any unwanted spacing */
+            padding: 0;
+            /* Removes any internal padding */
+            line-height: 1;
+            font-family: 'Ubuntu', sans-serif;
+            /* Reduces line height for tighter spacing */
+        }
+
+        .hindicontainer,
+        .englishcontainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* Centers the text within each section */
+        }
+
+        .language .hindicontainer .content .description p {
+            font-size: 18px;
+        }
+
+        /* From Uiverse.io by sina-parsania */
+        button {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 30px;
+            background: #ffc70f;
+            font-family: "Montserrat", sans-serif;
+            overflow: hidden;
+            cursor: pointer;
+            border: none;
+            margin: 2rem 23rem -5rem -11rem;
+        }
+
+        button:after {
+            content: " ";
+            width: 100%;
+            height: 0%;
+            background: #0055a6;
+            position: absolute;
+            transition: all 0.5s;
+            bottom: 0;
+            border-radius: 30px;
+            transform: scale(1);
+            transition-duration: 0.4s, 0.2s, 0.2s, 0.4s;
+        }
+
+        button:hover::after {
+            bottom: auto;
+            top: 0;
+            height: 100%;
+            border-radius: 30px;
+            transform: scale(1.5);
+        }
+
+        button span {
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            color: black;
+            font-size: 1.125em;
+            transition: all 0.3s ease-in-out;
+            border-radius: 30px;
+            vertical-align: middle;
+            display: inline-block;
+            padding: 14px 42px;
+            border: 0;
+            position: relative;
+            z-index: 2;
+            text-transform: capitalize;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        button:hover span a{
+            color: white;
+            transition: 1s;
+            animation: scaleUp 1s ease-in-out;
+            border-radius: 30px;
+        }
+
+        @keyframes scaleUp {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        button span a{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+
+<body class="fade-in">
+
+    <header>
+        <img src="{% static 'img_logo.png' %}" style="margin-left: 3.5rem;" class="slide-up">
+        <div class="slide-up">
+            <h1>Indian Aviation Academy</h1>
+            <p><b>Nurturing Aviation for the Future</b></p>
+        </div>
+        <div class="logos">
+            <img src="{% static 'logo1.jpg' %}" class="slide-up">
+            <img src="{% static 'logo2.jpg' %}" style="width: 100px; height: 85px;" class="slide-up">
+            <img src="{% static 'logo3.jpg' %}" class="slide-up">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome">
+            <div class="one">
+                <p class="slide-up">Welcome to</p>
+            </div>
+            <div class="two">
+                <p class="slide-up"><b>Indian Aviation Academy</b></p>
+            </div>
+        </div>
+        <div class="language">
+            <div class="hindicontainer">
+                <div class="content">
+                    <div class="description">
+                        <p>
+                            भारतीय विमानन अकादमी (भा.वि.अ.) विमानन में शिक्षा, प्रशिक्षण और अनुसंधान के लिए एक अग्रणी
+                            संस्थान है। यह भारतीय विमानपत्तन प्राधिकरण,
+                            नागर विमानन महानिदेशालय, नागर विमानन सुरक्षा ब्यूरो के संयुक्त प्रशिक्षण अकादमी के रूप में
+                            कार्य
+                            करती है। आई.सी.ए.ओ. ट्रेनएयर प्लस प्रोग्राम के पूर्ण सदस्य के रूप में, अकादमी विमानन के सभी
+                            क्षेत्रों में प्रशिक्षण गतिविधियों के साथ अनुभवात्मक शिक्षण की संस्कृति का संवर्धन करती है।
+                        </p>
+                    </div>
+                </div>
+                <div class="language-selection">
+                </div>
+            </div>
+            <div class="englishcontainer">
+                <div class="content">
+                    <div class="description">
+                        <p>
+                            Indian Aviation Academy (IAA) is a premier institute for Education, Training, and Research
+                            in
+                            Aviation. It functions as a joint training academy of Airports Authority of India (AAI),
+                            Directorate General of Civil Aviation (DGCA), Bureau of Civil Aviation Security (BCAS). A
+                            Full
+                            Member of ICAO TRAINAIR PLUS (TPP) program, the academy fosters a culture of experiential
+                            learning with training activities across all domains of aviation.
+                        </p>
+                    </div>
+                </div>
+                <div class="language-selection">
+                    <button class="slide-up">
+                        <span><a href="{% url 'login' %}">लॉगिन करना जारी रखें/Continue To Login</a></span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const slideUpElements = document.querySelectorAll(".slide-up");
+        slideUpElements.forEach((element) => {
+            element.style.opacity = "1"; /* Make visible after animation starts */
+        });
+    });
+</script>
+</html>
