@@ -24,7 +24,8 @@
         }
 
         .fade-in {
-            animation: fadeIn 0.5s ease-in-out; /* Reduced duration */
+            animation: fadeIn 0.5s ease-in-out;
+            /* Reduced duration */
         }
 
         @keyframes fadeIn {
@@ -38,7 +39,8 @@
         }
 
         .slide-up {
-            animation: slideUp 1s ease-out; /* Slide-up effect for elements */
+            animation: slideUp 1s ease-out;
+            /* Slide-up effect for elements */
         }
 
         @keyframes slideUp {
@@ -53,7 +55,8 @@
             }
         }
 
-        .content, button {
+        .content,
+        button {
             opacity: 1;
             animation: slideUp 1s ease-out;
         }
@@ -61,15 +64,15 @@
         header {
             background: linear-gradient(to right, #0055a6, #b2e8ff);
             color: white;
+            width: -webkit-fill-available;
             padding: 10px;
             display: flex;
+            flex-direction: row;
             align-items: center;
-            justify-content: space-between;
         }
 
         header h1 {
             font-size: 20px;
-            margin: 1rem 53.5rem 0rem 0rem;
         }
 
         header p {
@@ -77,9 +80,18 @@
             font-size: 14px;
         }
 
-        .logos img {
+        header .logos {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+            padding-right: 2rem;
+        }
+
+        header .logos img {
             height: 80px;
-            margin: 0px 45px 0px -35px;
+            padding-left: 1rem;
+
         }
 
         .container {
@@ -220,7 +232,7 @@
             text-align: center;
         }
 
-        button:hover span a{
+        button:hover span a {
             color: white;
             transition: 1s;
             animation: scaleUp 1s ease-in-out;
@@ -241,9 +253,98 @@
             }
         }
 
-        button span a{
+        button span a {
             text-decoration: none;
             color: black;
+        }
+
+        header img {
+            padding-left: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 2rem;
+            }
+
+            .content {
+                width: 90%;
+                height: auto;
+                padding: 20px;
+            }
+
+            .language {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .welcome {
+                font-size: 1.4rem;
+            }
+
+            button {
+                margin: 1.5rem 2rem;
+            }
+
+            button span {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 896px) {
+            body{
+                overflow: scroll;
+            }
+
+            header {
+                padding: 1rem;
+            }
+
+            header img {
+                padding-left: 1rem;
+            }
+
+            header h1 {
+                font-size: 18px;
+            }
+
+            header .logos img {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 14px;
+                width: 15rem;
+            }
+
+            .container {
+                padding: 2rem;
+            }
+
+            .content {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .welcome {
+                font-size: 1.2rem;
+            }
+
+            button {
+                margin: 1rem 1rem;
+                padding: 12px 30px;
+            }
+
+            button span {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
@@ -251,8 +352,9 @@
 <body class="fade-in">
 
     <header>
-        <img src="{% static 'img_logo.png' %}" style="margin-left: 3.5rem;" class="slide-up">
-        <div class="slide-up">
+        <img src="{% static 'img_logo.png' %}" class="slide-up">
+        <div class="slide-up"
+            style="opacity: 1;display: flex;flex-direction: column;padding-left: 5px; width: -webkit-fill-available; padding-top: 1rem;">
             <h1>Indian Aviation Academy</h1>
             <p><b>Nurturing Aviation for the Future</b></p>
         </div>
@@ -323,4 +425,5 @@
         });
     });
 </script>
+
 </html>

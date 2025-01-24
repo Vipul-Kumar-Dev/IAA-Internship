@@ -395,6 +395,119 @@
             display: flex;
             justify-content: left;
         }
+
+        @media (max-width: 1200px) {
+            header h1, header p {
+                margin: 1rem 0;
+                text-align: center;
+            }
+        
+            header img {
+                padding-left: 0;
+                margin: auto;
+            }
+        
+            .logos img {
+                height: 60px;
+                padding: 0.5rem;
+            }
+        
+            .container .heading h1 {
+                font-size: 2.5rem;
+            }
+        
+            .feed {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .card {
+                flex: 0 0 calc(90%);
+            }
+        
+            .card .content .heading {
+                font-size: 24px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+                padding: 15px;
+            }
+        
+            header h1 {
+                font-size: 18px;
+            }
+        
+            header p {
+                font-size: 12px;
+            }
+        
+            .logos img {
+                height: 50px;
+                padding: 0.5rem;
+            }
+        
+            .feed {
+                gap: 15px;
+            }
+        
+            .card {
+                flex: 0 0 calc(95%);
+            }
+        
+            .card .content .heading {
+                font-size: 20px;
+            }
+        
+            .card .content .para {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header img {
+                height: 60px;
+            }
+        
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        
+            .footer-logo img {
+                width: 6rem;
+                margin: auto;
+            }
+        
+            .map iframe {
+                width: 90%;
+                height: 12rem;
+                padding: 0;
+                margin: auto;
+            }
+        
+            .quick-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .quick-links li {
+                margin: 5px 0;
+            }
+        
+            .subscribe {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        
+            .subscribe input {
+                margin-bottom: 5px;
+            }
+        }
+        
     </style>
 </head>
 
