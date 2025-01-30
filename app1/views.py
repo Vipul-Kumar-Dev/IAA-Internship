@@ -96,6 +96,9 @@ def coursefeed(request):
 def cateringfeed(request):
     return render(request, "cateringfeed.html")
 
+def contact(request):
+    return render(request, "contact.html")
+
 from django.http import JsonResponse
 
 def serve_meta(request):

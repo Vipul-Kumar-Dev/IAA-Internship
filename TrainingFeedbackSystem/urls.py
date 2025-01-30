@@ -29,4 +29,5 @@ urlpatterns = [
     path('Course_Feed/', v1.coursefeed, name='coursefeed'),
     path('Catering_Feed/', v1.cateringfeed, name='cateringfeed'),
     path('meta.json', v1.serve_meta, name='meta_json'),
+    path('Contact', v1.contact, name='contact'),
 ]
