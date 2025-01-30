@@ -24,6 +24,7 @@ class Faculty(models.Model):
     faculty_name = models.CharField(max_length=255)
     rating = models.DecimalField(max_digits=5, decimal_places=0)  # Rating out of 5.00
     description = models.TextField(blank=True, null=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.faculty_name} rated {int(self.rating)}/5 by {self.Trainee.username}"
+        return f"{self.faculty_name} rated {self.rating}/5 by {self.trainee.username}"

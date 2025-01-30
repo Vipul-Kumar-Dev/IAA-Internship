@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.views.generic import RedirectView
 from app1 import views as v1
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +32,6 @@ urlpatterns = [
     path('Catering_Feed/', v1.cateringfeed, name='cateringfeed'),
     path('meta.json', v1.serve_meta, name='meta_json'),
     path('Contact', v1.contact, name='contact'),
+    path('ThankYou', v1.thankyou, name='thankyou'),
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico', permanent=True)),
 ]

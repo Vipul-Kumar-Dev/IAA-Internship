@@ -426,7 +426,8 @@
         </div>
         <div class="feedback-container">
             <h2>Feedback Form</h2>
-            <form action="/submit-feedback" method="post">
+            <form action="{% url 'thankyou' %}" method="post">
+                {% csrf_token %}
                 <!-- Your Name -->
                 <div class="form-group">
                     <label for="name">Your Name:</label>

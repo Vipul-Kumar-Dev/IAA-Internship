@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.contrib.auth.models import User
+from .models import Faculty
 
 def welcome_page(request):
     return render(request, "welcome.html")
@@ -85,6 +86,30 @@ def logout_view(request):
     return redirect('login')
 
 def facultyfeed(request):
+    if request.method == "POST":
+        trainee_id = request.session.get('user_id')  # Get the logged-in user
+        faculty_name = request.POST.get("faculty")  # Ensure your form has the correct name
+        rating = request.POST.get("rating")
+        description = request.POST.get("comments", "")
+
+        print(f"Trainee ID: {trainee_id}, Faculty: {faculty_name}, Rating: {rating}, Comments: {description}")
+
+        if not trainee_id:
+            return HttpResponse("User not logged in.", status=400)
+
+        try:
+            trainee = User.objects.get(id=trainee_id)  # Fetch the logged-in user
+            print(f"Trainee: {trainee}, Faculty: {faculty_name}, Rating: {rating}, Comments: {description}")
+            Faculty.objects.create(
+                Trainee=trainee,
+                faculty_name=faculty_name,
+                rating=rating,
+                description=description
+            )
+            return redirect('thankyou')  # Redirect after successful submission
+        except User.DoesNotExist:
+            return HttpResponse("Invalid User", status=400)
+
     return render(request, "facultyfeed.html")
 
 def infrafeed(request):
@@ -99,7 +124,10 @@ def cateringfeed(request):
 def contact(request):
     return render(request, "contact.html")
 
-from django.http import JsonResponse
+def thankyou(request):
+    return render(request, "thankyou.html")
+
+from django.http import HttpResponse, JsonResponse
 
 def serve_meta(request):
     return JsonResponse({
