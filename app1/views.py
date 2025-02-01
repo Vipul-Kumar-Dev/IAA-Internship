@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Faculty
+from django.contrib.auth.decorators import login_required
+from .models import Faculty, User, Infrastructure, Course
 
 def welcome_page(request):
     return render(request, "welcome.html")
@@ -68,7 +69,7 @@ def signup(request):
         return redirect('login')
 
     return render(request, "login.html")
-
+@login_required
 def home_page(request):
     # Check if user is logged in
     user_id = request.session.get('user_id')
@@ -85,37 +86,93 @@ def logout_view(request):
     messages.success(request, "You have successfully logged out.")
     return redirect('login')
 
+@login_required
 def facultyfeed(request):
     if request.method == "POST":
-        trainee_id = request.session.get('user_id')  # Get the logged-in user
-        faculty_name = request.POST.get("faculty")  # Ensure your form has the correct name
+        faculty_name = request.POST.get("faculty")
         rating = request.POST.get("rating")
         description = request.POST.get("comments", "")
 
-        print(f"Trainee ID: {trainee_id}, Faculty: {faculty_name}, Rating: {rating}, Comments: {description}")
+        # Validate input
+        if not all([faculty_name, rating]):
+            messages.error(request, "Faculty name and rating are required.")
+            return redirect('facultyfeed')
 
-        if not trainee_id:
-            return HttpResponse("User not logged in.", status=400)
-
+        # Get the logged-in user from session
         try:
-            trainee = User.objects.get(id=trainee_id)  # Fetch the logged-in user
-            print(f"Trainee: {trainee}, Faculty: {faculty_name}, Rating: {rating}, Comments: {description}")
-            Faculty.objects.create(
-                Trainee=trainee,
-                faculty_name=faculty_name,
-                rating=rating,
-                description=description
-            )
-            return redirect('thankyou')  # Redirect after successful submission
+            user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
-            return HttpResponse("Invalid User", status=400)
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
+
+        # Create feedback
+        Faculty.objects.create(
+            Trainee=user_instance,
+            faculty_name=faculty_name,
+            rating=rating,
+            description=description
+        )
+        messages.success(request, "Feedback submitted successfully!")
+        return redirect('thankyou')
 
     return render(request, "facultyfeed.html")
 
+@login_required
 def infrafeed(request):
+    if request.method == "POST":
+        infrastructure_name = request.POST.get("infrastructure")
+        rating = request.POST.get("rating")
+        description = request.POST.get("comments", "")
+
+        # Validate input
+        if not all([infrastructure_name, rating]):
+            messages.error(request, "Infrastructure name and rating are required.")
+            return redirect('infrafeed')
+
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
+
+        Infrastructure.objects.create(
+            Trainee=user_instance,
+            infrastructure_name=infrastructure_name,
+            rating=rating,
+            description=description
+        )
+
+        messages.success(request, "Feedback submitted successfully!")
+        return redirect('thankyou')
+
     return render(request, "infrafeed.html")
 
 def coursefeed(request):
+    if request.method == "POST":
+        course_name = request.POST.get("course_name")
+        rating = request.POST.get("rating")
+        description = request.POST.get("comments", "")
+
+        # Validate input
+        if not all([course_name, rating]):
+            messages.error(request, "Course name and rating are required.")
+            return redirect('coursefeed')
+
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
+
+        Course.objects.create(
+            Trainee=user_instance,
+            course_name=course_name,
+            rating=rating,
+            description=description
+        )
+
+        messages.success(request, "Feedback submitted successfully!")
+        return redirect('thankyou')
     return render(request, "coursefeed.html")
 
 def cateringfeed(request):

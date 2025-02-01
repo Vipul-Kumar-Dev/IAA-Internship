@@ -262,6 +262,7 @@
             margin: 2rem auto 0;
             padding: 1rem 3rem;
             border-radius: 30em;
+            cursor: pointer;
             border-style: none;
             position: relative;
             z-index: 1;
@@ -426,17 +427,17 @@
         </div>
         <div class="feedback-container">
             <h2>Feedback Form</h2>
-            <form action="/submit-feedback" method="post">
+            <form action="{% url 'infrafeed' %}" method="post">
+                {% csrf_token %}
                 <!-- Your Name -->
                 <div class="form-group">
                     <label for="name">Your Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
                 </div>
-    
-                <!-- Faculty Name -->
+
                 <div class="form-group">
-                    <label for="faculty">Infrastructure Name:</label>
-                    <input type="text" id="faculty" name="faculty" placeholder="" required>
+                    <label for="infrastructure">Infrastructure Name:</label>
+                    <input type="text" id="infrastructure" name="infrastructure" placeholder="Enter Infrastructure name" required>
                 </div>
     
                 <div class="form-group">

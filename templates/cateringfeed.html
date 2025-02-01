@@ -263,6 +263,7 @@
             padding: 1rem 3rem;
             border-radius: 30em;
             border-style: none;
+            cursor: pointer;
             position: relative;
             z-index: 1;
             overflow: hidden;
@@ -426,7 +427,8 @@
         </div>
         <div class="feedback-container">
             <h2>Feedback Form</h2>
-            <form action="/submit-feedback" method="post">
+            <form action="{% url 'cateringfeed' %}" method="post">
+                {% csrf_token %}
                 <!-- Your Name -->
                 <div class="form-group">
                     <label for="name">Your Name:</label>

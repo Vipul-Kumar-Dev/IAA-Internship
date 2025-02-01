@@ -264,6 +264,7 @@
             border-radius: 30em;
             border-style: none;
             position: relative;
+            cursor: pointer;
             z-index: 1;
             overflow: hidden;
             text-decoration: none;
@@ -426,7 +427,7 @@
         </div>
         <div class="feedback-container">
             <h2>Feedback Form</h2>
-            <form action="{% url 'thankyou' %}" method="post">
+            <form action="{% url 'facultyfeed' %}" method="post">
                 {% csrf_token %}
                 <!-- Your Name -->
                 <div class="form-group">
