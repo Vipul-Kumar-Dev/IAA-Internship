@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'app1',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -118,10 +122,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 60 * 60 * 24
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

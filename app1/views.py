@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Faculty, User, Infrastructure, Course
+from .models import Faculty, User, Infrastructure, Course, Catering
+from django.contrib.auth import authenticate, login
 
 def welcome_page(request):
     return render(request, "welcome.html")
@@ -13,19 +14,15 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Authenticate user securely
-        try:
-            user = User.objects.get(username=username)
-            if check_password(password, user.password):
-                # Set session data
-                request.session['user_firstname'] = user.first_name
-                request.session['user_id'] = user.id
-                messages.success(request, "You have successfully logged in!")
-                return redirect('home')
-            else:
-                messages.error(request, "Invalid username or password.")
-                return redirect('login')
-        except User.DoesNotExist:
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            request.session['user_firstname'] = user.first_name
+            request.session['user_id'] = user.id
+            request.session.save()
+            messages.success(request, "You have successfully logged in!")
+            return redirect('home')
+        else:
             messages.error(request, "Invalid username or password.")
             return redirect('login')
 
@@ -77,7 +74,7 @@ def home_page(request):
         messages.error(request, "You must log in to access the home page.")
         return redirect('login')
 
-    firstname = request.session.get('user_firstname', '')
+    firstname = request.user.first_name
     return render(request, "home.html", {"firstname": firstname})
 
 def logout_view(request):
@@ -147,6 +144,7 @@ def infrafeed(request):
 
     return render(request, "infrafeed.html")
 
+@login_required
 def coursefeed(request):
     if request.method == "POST":
         course_name = request.POST.get("course_name")
@@ -175,7 +173,33 @@ def coursefeed(request):
         return redirect('thankyou')
     return render(request, "coursefeed.html")
 
+@login_required
 def cateringfeed(request):
+    if request.method == "POST":
+        catering_name = request.POST.get("catering_name")
+        rating = request.POST.get("rating")
+        description = request.POST.get("comments", "")
+
+        # Validate input
+        if not all([catering_name, rating]):
+            messages.error(request, "Catering name and rating are required.")
+            return redirect('cateringfeed')
+
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
+
+        Catering.objects.create(
+            Trainee=user_instance,
+            catering_name=catering_name,
+            rating=rating,
+            description=description
+        )
+
+        messages.success(request, "Feedback submitted successfully!")
+        return redirect('thankyou')
     return render(request, "cateringfeed.html")
 
 def contact(request):
