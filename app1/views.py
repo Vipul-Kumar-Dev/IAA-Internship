@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import check_password
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Faculty, User, Infrastructure, Course, Catering
-from django.contrib.auth import authenticate, login
-
+from .models import Faculty, User, Infrastructure, Course
+from django.contrib.auth import get_user_model
+User = get_user_model()
 def welcome_page(request):
     return render(request, "welcome.html")
 
@@ -14,15 +13,19 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            request.session['user_firstname'] = user.first_name
-            request.session['user_id'] = user.id
-            request.session.save()
-            messages.success(request, "You have successfully logged in!")
-            return redirect('home')
-        else:
+        # Authenticate user securely
+        try:
+            user = User.objects.get(username=username)
+            if check_password(password, user.password):
+                # Set session data
+                request.session['user_firstname'] = user.first_name
+                request.session['user_id'] = user.id
+                messages.success(request, "You have successfully logged in!")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid username or password.")
+                return redirect('login')
+        except User.DoesNotExist:
             messages.error(request, "Invalid username or password.")
             return redirect('login')
 
@@ -36,7 +39,6 @@ def signup(request):
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         
-        # Validate input
         if not all([firstname, email, username, password, confirm_password]):
             messages.error(request, "All fields are required.")
             return redirect('signup')
@@ -45,7 +47,6 @@ def signup(request):
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
         
-        # Check for existing email or username
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already registered.")
             return redirect('signup')
@@ -53,19 +54,19 @@ def signup(request):
             messages.error(request, "Username is already taken.")
             return redirect('signup')
         
-        # Save new user with hashed password
         user = User.objects.create_user(
             first_name=firstname,
             email=email,
             username=username,
-            password=password  # No need to hash; create_user handles it
+            password=password
         )
-        user.is_active = True  # Ensure the user is active
+        user.is_active = True
         user.save()
         messages.success(request, "Signup successful! You can now log in.")
         return redirect('login')
 
-    return render(request, "login.html")
+    return render(request, "signup.html")
+
 @login_required
 def home_page(request):
     # Check if user is logged in
@@ -74,7 +75,7 @@ def home_page(request):
         messages.error(request, "You must log in to access the home page.")
         return redirect('login')
 
-    firstname = request.user.first_name
+    firstname = request.session.get('user_firstname', '')
     return render(request, "home.html", {"firstname": firstname})
 
 def logout_view(request):
@@ -96,8 +97,11 @@ def facultyfeed(request):
             return redirect('facultyfeed')
 
         # Get the logged-in user from session
+        user_id = request.session.get("user_id")
+        print(f"User ID from session: {user_id}")  # Debugging statement
         try:
-            user_instance = User.objects.get(id=request.session.get("user_id"))
+            user_instance = User.objects.get(id=user_id)
+            print(f"User instance retrieved: {user_instance}")  # Debugging statement
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
@@ -156,14 +160,17 @@ def coursefeed(request):
             messages.error(request, "Course name and rating are required.")
             return redirect('coursefeed')
 
+        # Fetch the user instance
+        user_id = request.session.get("user_id")  # Ensure this session is set correctly when the user logs in
         try:
-            user_instance = User.objects.get(id=request.session.get("user_id"))
+            instance = User.objects.get(id=user_id)  # Fetch the user instance directly using .get()
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
+        # Create a new Course record
         Course.objects.create(
-            Trainee=user_instance,
+            Trainee=instance,  # Assign the User instance to the ForeignKey field
             course_name=course_name,
             rating=rating,
             description=description
@@ -171,35 +178,10 @@ def coursefeed(request):
 
         messages.success(request, "Feedback submitted successfully!")
         return redirect('thankyou')
+
     return render(request, "coursefeed.html")
 
-@login_required
 def cateringfeed(request):
-    if request.method == "POST":
-        catering_name = request.POST.get("catering_name")
-        rating = request.POST.get("rating")
-        description = request.POST.get("comments", "")
-
-        # Validate input
-        if not all([catering_name, rating]):
-            messages.error(request, "Catering name and rating are required.")
-            return redirect('cateringfeed')
-
-        try:
-            user_instance = User.objects.get(id=request.session.get("user_id"))
-        except User.DoesNotExist:
-            messages.error(request, "User not found. Please log in again.")
-            return redirect('login')
-
-        Catering.objects.create(
-            Trainee=user_instance,
-            catering_name=catering_name,
-            rating=rating,
-            description=description
-        )
-
-        messages.success(request, "Feedback submitted successfully!")
-        return redirect('thankyou')
     return render(request, "cateringfeed.html")
 
 def contact(request):
