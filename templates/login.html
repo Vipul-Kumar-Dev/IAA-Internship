@@ -411,7 +411,7 @@
 
             <div class="form_back">
                 <div class="form_details">Sign Up</div>
-                <form method="POST" action="{% url 'signup' %}">
+                <form method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
                     <input placeholder="Firstname" class="input" type="text" name="firstname" required><br><br>
                     <input placeholder="Email Address" class="input" type="email" name="email" required><br><br>

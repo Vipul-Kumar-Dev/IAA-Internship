@@ -429,12 +429,6 @@
             <h2>Feedback Form</h2>
             <form action="{% url 'infrafeed' %}" method="post">
                 {% csrf_token %}
-                <!-- Your Name -->
-                <div class="form-group">
-                    <label for="name">Your Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                </div>
-
                 <div class="form-group">
                     <label for="infrastructure">Infrastructure Name:</label>
                     <input type="text" id="infrastructure" name="infrastructure" placeholder="Enter Infrastructure name" required>

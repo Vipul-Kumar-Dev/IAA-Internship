@@ -429,13 +429,6 @@
             <h2>Feedback Form</h2>
             <form action="{% url 'cateringfeed' %}" method="post">
                 {% csrf_token %}
-                <!-- Your Name -->
-                <div class="form-group">
-                    <label for="name">Your Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                </div>
-    
-                <!-- Faculty Name -->
                 <div class="form-group">
                     <label for="catering_name">Catering Name:</label>
                     <input type="text" id="catering_name" name="catering_name" placeholder="Enter Catering Name" required>
