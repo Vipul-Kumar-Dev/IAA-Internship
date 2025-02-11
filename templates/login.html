@@ -259,9 +259,8 @@
 
         .message {
             padding: 10px;
-            margin-bottom: 15px;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .message.success {
@@ -277,6 +276,7 @@
             background-color: #f8d7da;
             border: 1px solid #f5c2c7;
             opacity: 1;
+            padding: 8px;
         }
 
         @media (max-width: 768px) {
@@ -411,7 +411,7 @@
 
             <div class="form_back">
                 <div class="form_details">Sign Up</div>
-                <form method="POST" action="{% url 'login' %}">
+                <form method="POST" action="{% url 'signup' %}">
                     {% csrf_token %}
                     <input placeholder="Firstname" class="input" type="text" name="firstname" required><br><br>
                     <input placeholder="Email Address" class="input" type="email" name="email" required><br><br>
@@ -430,7 +430,6 @@
     {% block content %}
     {% endblock %}
 </body>
-<script>
-</script>
+
 
 </html>

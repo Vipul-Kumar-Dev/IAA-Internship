@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from .models import Faculty, Infrastructure, Course, Catering
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model
 
 User = get_user_model()
 
@@ -21,8 +21,12 @@ def login_page(request):
             if check_password(password, user.password):
                 request.session['user_firstname'] = user.first_name
                 request.session['user_id'] = user.id
+
+                next_url = request.GET.get('next', 'home')
+                
                 messages.success(request, "You have successfully logged in!")
-                return redirect('home')
+                return redirect(next_url)
+
             else:
                 messages.error(request, "Invalid username or password.")
                 return redirect('login')
@@ -79,36 +83,45 @@ def home_page(request):
     return render(request, "home.html", {"firstname": firstname})
 
 def logout_view(request):
-    request.session.flush()
-    messages.success(request, "You have successfully logged out.")
+    if not request.user.is_staff:
+        logout(request)
+        request.session.flush()
+        messages.success(request, "You have successfully logged out.")
+    else:
+        messages.success(request, "You have successfully logged out.")
+    
     return redirect('login')
 
 @login_required
 def facultyfeed(request):
     if request.method == "POST":
-        trainee = request.user
         faculty_name = request.POST.get("faculty")
         rating = request.POST.get("rating")
         description = request.POST.get("comments", "")
 
-        print(f"Trainee: {trainee.username}, Faculty: {faculty_name}, Rating: {rating}, Comments: {description}")
-
-        if not trainee:
-            return HttpResponse("User not logged in.", status=400)
         try:
             rating = int(rating)
             if rating < 1 or rating > 5:
-                return HttpResponse("Rating must be between 1 and 5.", status=400)
+                messages.error(request, "Rating must be between 1 and 5.")
+                return redirect('facultyfeed')
         except ValueError:
-            return HttpResponse("Invalid rating value.", status=400)
+            messages.error(request, "Invalid rating value.")
+            return redirect('facultyfeed')
+        
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
 
         Faculty.objects.create(
-            trainee=trainee,
+            trainee=user_instance,
             faculty_name=faculty_name,
             rating=rating,
             description=description
         )
 
+        messages.success(request, "Feedback submitted successfully!")
         return redirect('thankyou')
 
     return render(request, "facultyfeed.html")
@@ -124,11 +137,19 @@ def infrafeed(request):
             messages.error(request, "Infrastructure name and rating are required.")
             return redirect('infrafeed')
 
-        user_instance = request.user
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                messages.error(request, "Rating must be between 1 and 5.")
+                return redirect('infrafeed')
+        except ValueError:
+            messages.error(request, "Invalid rating value.")
+            return redirect('infrafeed')
+
         Infrastructure.objects.create(
-            Trainee=user_instance,
+            trainee=request.user,
             infrastructure_name=infrastructure_name,
-            rating=int(rating),
+            rating=rating,
             description=description
         )
 
@@ -148,11 +169,19 @@ def coursefeed(request):
             messages.error(request, "Course name and rating are required.")
             return redirect('coursefeed')
 
-        user_instance = request.user
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                messages.error(request, "Rating must be between 1 and 5.")
+                return redirect('coursefeed')
+        except ValueError:
+            messages.error(request, "Invalid rating value.")
+            return redirect('coursefeed')
+
         Course.objects.create(
-            Trainee=user_instance,
+            trainee=request.user,
             course_name=course_name,
-            rating=int(rating),
+            rating=rating,
             description=description
         )
 
@@ -172,12 +201,20 @@ def cateringfeed(request):
             messages.error(request, "Catering name and rating are required.")
             return redirect('cateringfeed')
 
-        user_instance = request.user
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                messages.error(request, "Rating must be between 1 and 5.")
+                return redirect('cateringfeed')
+        except ValueError:
+            messages.error(request, "Invalid rating value.")
+            return redirect('cateringfeed')
+
         Catering.objects.create(
-            Trainee=user_instance,
+            trainee=request.user,
             catering_name=catering_name,
-            rating=int(rating),
-            description=description,
+            rating=rating,
+            description=description
         )
 
         messages.success(request, "Feedback submitted successfully!")
