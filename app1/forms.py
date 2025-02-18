@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User  # Use Django's built-in User model
+from django.contrib.auth.models import User
 from .models import Infrastructure, Faculty, Catering, Course
 
 class InfrastructureForm(forms.ModelForm):

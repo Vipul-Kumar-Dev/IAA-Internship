@@ -1,10 +1,117 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import check_password
+import matplotlib.pyplot as plt
+import base64
+from openpyxl import Workbook
+from openpyxl.styles import Alignment
+from django.utils.timezone import localtime
+from datetime import datetime
+from io import BytesIO
+from django.utils.timezone import now
+from django.shortcuts import render
 from django.contrib import messages
 from .models import Faculty, Infrastructure, Course, Catering
 from django.contrib.auth import authenticate, login, logout, get_user_model
+
+def download_feedback(request):
+    # Create a new Excel workbook and worksheet
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Feedback Data"
+
+    # Set the header row in the Excel sheet
+    headers = ['Feedback Category', 'Trainee', 'Name', 'Rating', 'Description', 'Submitted At']
+    ws.append(headers)
+
+    # Set some formatting for the header row
+    for cell in ws[1]:
+        cell.alignment = Alignment(horizontal='center', vertical='center')
+
+    # Get all feedback data from the database
+    feedback_data = []
+
+    # Fetch data for each feedback category
+    for model, category in [
+        (Infrastructure, 'Infrastructure'),
+        (Faculty, 'Faculty'),
+        (Course, 'Course'),
+        (Catering, 'Catering'),
+    ]:
+        feedback_data += [
+            (category, feedback.trainee.username, feedback.infrastructure_name if model == Infrastructure else feedback.faculty_name if model == Faculty else feedback.course_name if model == Course else feedback.catering_name,
+             feedback.rating, feedback.description, localtime(feedback.submitted_at).strftime("%Y-%m-%d %H:%M:%S"))
+            for feedback in model.objects.all()
+        ]
+
+    # Add the data to the worksheet
+    for feedback in feedback_data:
+        ws.append(feedback)
+
+    # Set the filename based on the current date and time
+    file_name = f"feedback_data_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    
+    # Set the response to download the Excel file
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response['Content-Disposition'] = f'attachment; filename={file_name}'
+    wb.save(response)
+
+    return response
+
+def get_filtered_feedback(model, filter_type):
+    today = now().date()
+    
+    if filter_type == "day":
+        return model.objects.filter(submitted_at__date=today).count()
+    elif filter_type == "month":
+        return model.objects.filter(submitted_at__year=today.year, submitted_at__month=today.month).count()
+    elif filter_type == "year":
+        return model.objects.filter(submitted_at__year=today.year).count()
+    
+    return 0
+
+def get_feedback_data(request):
+    filter_type = request.GET.get('filter', 'month')
+    
+    data = {
+        "infrastructure": get_filtered_feedback(Infrastructure, filter_type),
+        "faculty": get_filtered_feedback(Faculty, filter_type),
+        "course": get_filtered_feedback(Course, filter_type),
+        "catering": get_filtered_feedback(Catering, filter_type),
+    }
+
+    return JsonResponse(data)
+
+def get_feedback_data(request):
+    def get_ratings(model):
+        return {i: model.objects.filter(rating=i).count() for i in range(1, 6)}
+
+    data = {
+        "infrastructure": get_ratings(Infrastructure),
+        "faculty": get_ratings(Faculty),
+        "course": get_ratings(Course),
+        "catering": get_ratings(Catering),
+    }
+
+    return JsonResponse(data)
+
+def generate_chart(feedbacks, title):
+    rating_counts = {i: feedbacks.filter(rating=i).count() for i in range(1, 6)}
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(rating_counts.keys(), rating_counts.values(), color=['red', 'orange', 'yellow', 'green', 'blue'])
+    plt.xlabel('Ratings')
+    plt.ylabel('Number of Feedbacks')
+    plt.title(title)
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    encoded_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    
+    return encoded_image
 
 User = get_user_model()
 
@@ -16,21 +123,22 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        try:
-            user = User.objects.get(username=username)
-            if check_password(password, user.password):
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
                 request.session['user_firstname'] = user.first_name
                 request.session['user_id'] = user.id
 
-                next_url = request.GET.get('next', 'home')
-                
-                messages.success(request, "You have successfully logged in!")
-                return redirect(next_url)
+                if user.is_superuser:
+                    return redirect('adminhome')
+                else:
+                    return redirect('home')
 
             else:
-                messages.error(request, "Invalid username or password.")
+                messages.error(request, "Your account is inactive.")
                 return redirect('login')
-        except User.DoesNotExist:
+        else:
             messages.error(request, "Invalid username or password.")
             return redirect('login')
 
@@ -133,10 +241,6 @@ def infrafeed(request):
         rating = request.POST.get("rating")
         description = request.POST.get("comments", "")
 
-        if not all([infrastructure_name, rating]):
-            messages.error(request, "Infrastructure name and rating are required.")
-            return redirect('infrafeed')
-
         try:
             rating = int(rating)
             if rating < 1 or rating > 5:
@@ -145,9 +249,15 @@ def infrafeed(request):
         except ValueError:
             messages.error(request, "Invalid rating value.")
             return redirect('infrafeed')
+        
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
 
         Infrastructure.objects.create(
-            trainee=request.user,
+            trainee=user_instance,
             infrastructure_name=infrastructure_name,
             rating=rating,
             description=description
@@ -177,9 +287,15 @@ def coursefeed(request):
         except ValueError:
             messages.error(request, "Invalid rating value.")
             return redirect('coursefeed')
+        
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
 
         Course.objects.create(
-            trainee=request.user,
+            trainee=user_instance,
             course_name=course_name,
             rating=rating,
             description=description
@@ -209,9 +325,15 @@ def cateringfeed(request):
         except ValueError:
             messages.error(request, "Invalid rating value.")
             return redirect('cateringfeed')
+        
+        try:
+            user_instance = User.objects.get(id=request.session.get("user_id"))
+        except User.DoesNotExist:
+            messages.error(request, "User not found. Please log in again.")
+            return redirect('login')
 
         Catering.objects.create(
-            trainee=request.user,
+            trainee=user_instance,
             catering_name=catering_name,
             rating=rating,
             description=description
@@ -224,6 +346,9 @@ def cateringfeed(request):
 
 def contact(request):
     return render(request, "contact.html")
+
+def admin_home(request):
+    return render(request, 'adminhome.html')
 
 def thankyou(request):
     return render(request, "thankyou.html")

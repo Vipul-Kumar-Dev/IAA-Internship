@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #filter-select {
+            display: block;
+            margin: 10px auto;
+            padding: 8px;
+        }
+
+        .Chart1, .Chart2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .chart-container {
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Feedback Insights</h2>
+    <label for="filter-select">Show Feedback for:</label>
+    <select id="filter-select">
+        <option value="day">Today</option>
+        <option value="month" selected>This Month</option>
+        <option value="year">This Year</option>
+    </select>
+
+    <div class="Chart1">
+        <div class="chart-container">
+            <div class="chart-title">Infrastructure Feedback</div>
+            <canvas id="infrastructureChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Faculty Feedback</div>
+            <canvas id="facultyChart"></canvas>
+        </div>
+    </div>
+    <div class="Chart2">
+        <div class="chart-container">
+            <div class="chart-title">Course Feedback</div>
+            <canvas id="courseChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Catering Feedback</div>
+            <canvas id="cateringChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function fetchDataAndUpdateCharts(filterType) {
+            fetch(`/feedback-data/?filter=${filterType}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateChart(infrastructureChart, data.infrastructure);
+                    updateChart(facultyChart, data.faculty);
+                    updateChart(courseChart, data.course);
+                    updateChart(cateringChart, data.catering);
+                });
+        }
+
+        function createChart(ctx, title) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Total Feedback'],
+                    datasets: [{
+                        label: title,
+                        data: [0],
+                        backgroundColor: ['#4e73df']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function updateChart(chart, data) {
+            chart.data.datasets[0].data = [data || 0];
+            chart.update();
+        }
+
+        const infrastructureChart = createChart(document.getElementById('infrastructureChart').getContext('2d'), "Infrastructure Feedback");
+        const facultyChart = createChart(document.getElementById('facultyChart').getContext('2d'), "Faculty Feedback");
+        const courseChart = createChart(document.getElementById('courseChart').getContext('2d'), "Course Feedback");
+        const cateringChart = createChart(document.getElementById('cateringChart').getContext('2d'), "Catering Feedback");
+
+        document.getElementById('filter-select').addEventListener('change', function () {
+            fetchDataAndUpdateCharts(this.value);
+        });
+
+        setInterval(function () {
+            const filterType = document.getElementById('filter-select').value;
+            fetchDataAndUpdateCharts(filterType);
+        }, 1000);
+
+        fetchDataAndUpdateCharts('month');
+    </script>
+
+</body>
+
+</html>
