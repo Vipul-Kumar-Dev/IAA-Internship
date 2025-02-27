@@ -110,7 +110,7 @@ def generate_chart(feedbacks, title):
     buffer.seek(0)
     encoded_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
     buffer.close()
-    
+
     return encoded_image
 
 User = get_user_model()
@@ -204,28 +204,56 @@ def logout_view(request):
 def facultyfeed(request):
     if request.method == "POST":
         faculty_name = request.POST.get("faculty")
-        rating = request.POST.get("rating")
+        behavior = request.POST.get("behavior")
+        knowledge = request.POST.get("knowledge")
+        interaction = request.POST.get("interaction")
+        clarity = request.POST.get("clarity")
+        response = request.POST.get("response")
+        examples = request.POST.get("examples")
+        motivation = request.POST.get("motivation")
+        satisfaction = request.POST.get("satisfaction")
         description = request.POST.get("comments", "")
 
+        # Validate numeric fields
         try:
-            rating = int(rating)
-            if rating < 1 or rating > 5:
-                messages.error(request, "Rating must be between 1 and 5.")
-                return redirect('facultyfeed')
+            behavior = int(behavior)
+            knowledge = int(knowledge)
+            interaction = int(interaction)
+            clarity = int(clarity)
+            response = int(response)
+            examples = int(examples)
+            motivation = int(motivation)
+            satisfaction = int(satisfaction)
+
+            # Ensure values are within range
+            for rating in [behavior, knowledge, interaction, clarity, response, examples, motivation, satisfaction]:
+                if rating < 1 or rating > 5:
+                    messages.error(request, "Each rating must be between 1 and 5.")
+                    return redirect('facultyfeed')
+
         except ValueError:
-            messages.error(request, "Invalid rating value.")
+            messages.error(request, "Invalid rating value. Please enter a number between 1 and 5.")
             return redirect('facultyfeed')
-        
+
+        # Fetch the user instance
         try:
             user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
+        # Save the feedback
         Faculty.objects.create(
             trainee=user_instance,
             faculty_name=faculty_name,
-            rating=rating,
+            behavior=behavior,
+            knowledge=knowledge,
+            interaction=interaction,
+            clarity=clarity,
+            response=response,
+            examples=examples,
+            motivation=motivation,
+            satisfaction=satisfaction,
             description=description
         )
 
@@ -238,28 +266,44 @@ def facultyfeed(request):
 def infrafeed(request):
     if request.method == "POST":
         infrastructure_name = request.POST.get("infrastructure")
-        rating = request.POST.get("rating")
+        quality = request.POST.get("quality")
+        resources = request.POST.get("resources")
+        maintenance = request.POST.get("maintenance")
+        safety = request.POST.get("safety")
+        satisfaction = request.POST.get("satisfaction")
         description = request.POST.get("comments", "")
 
         try:
-            rating = int(rating)
-            if rating < 1 or rating > 5:
-                messages.error(request, "Rating must be between 1 and 5.")
-                return redirect('infrafeed')
+            quality = int(quality)
+            resources = int(resources)
+            maintenance = int(maintenance)
+            safety = int(safety)
+            satisfaction = int(satisfaction)
+
+            for rating in [quality, resources, maintenance, safety, satisfaction]:
+                if rating < 1 or rating > 5:
+                    messages.error(request, "Each rating must be between 1 and 5.")
+                    return redirect('infrafeed')
+
         except ValueError:
-            messages.error(request, "Invalid rating value.")
+            messages.error(request, "Invalid rating value. Please enter a number between 1 and 5.")
             return redirect('infrafeed')
-        
+
         try:
             user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
+        # Save the feedback
         Infrastructure.objects.create(
             trainee=user_instance,
             infrastructure_name=infrastructure_name,
-            rating=rating,
+            quality=quality,
+            resources=resources,
+            maintenance=maintenance,
+            safety=safety,
+            satisfaction=satisfaction,
             description=description
         )
 
@@ -272,32 +316,41 @@ def infrafeed(request):
 def coursefeed(request):
     if request.method == "POST":
         course_name = request.POST.get("course_name")
-        rating = request.POST.get("rating")
+        content = request.POST.get("content")
+        instructor = request.POST.get("instructor")
+        materials = request.POST.get("materials")
+        satisfaction = request.POST.get("satisfaction")
         description = request.POST.get("comments", "")
 
-        if not all([course_name, rating]):
-            messages.error(request, "Course name and rating are required.")
-            return redirect('coursefeed')
-
         try:
-            rating = int(rating)
-            if rating < 1 or rating > 5:
-                messages.error(request, "Rating must be between 1 and 5.")
-                return redirect('coursefeed')
+            content = int(content)
+            instructor = int(instructor)
+            materials = int(materials)
+            satisfaction = int(satisfaction)
+
+            for rating in [content, instructor, materials, satisfaction]:
+                if rating < 1 or rating > 5:
+                    messages.error(request, "Each rating must be between 1 and 5.")
+                    return redirect('infrafeed')
+
         except ValueError:
-            messages.error(request, "Invalid rating value.")
-            return redirect('coursefeed')
-        
+            messages.error(request, "Invalid rating value. Please enter a number between 1 and 5.")
+            return redirect('infrafeed')
+
         try:
             user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
+        # Save the feedback
         Course.objects.create(
             trainee=user_instance,
             course_name=course_name,
-            rating=rating,
+            content=content,
+            instructor=instructor,
+            materials=materials,
+            satisfaction=satisfaction,
             description=description
         )
 
@@ -310,32 +363,44 @@ def coursefeed(request):
 def cateringfeed(request):
     if request.method == "POST":
         catering_name = request.POST.get("catering_name")
-        rating = request.POST.get("rating")
+        food_quality = request.POST.get("food_quality")
+        service_quality = request.POST.get("service_quality")
+        Cleanliness = request.POST.get("Cleanliness")
+        Affordable = request.POST.get("Affordable")
+        overall_satisfaction = request.POST.get("overall_satisfaction")
         description = request.POST.get("comments", "")
 
-        if not all([catering_name, rating]):
-            messages.error(request, "Catering name and rating are required.")
-            return redirect('cateringfeed')
-
         try:
-            rating = int(rating)
-            if rating < 1 or rating > 5:
-                messages.error(request, "Rating must be between 1 and 5.")
-                return redirect('cateringfeed')
+            food_quality = int(food_quality)
+            service_quality = int(service_quality)
+            Cleanliness = int(Cleanliness)
+            Affordable = int(Affordable)
+            overall_satisfaction = int(overall_satisfaction)
+
+            for rating in [food_quality, service_quality, Cleanliness, Affordable, overall_satisfaction]:
+                if rating < 1 or rating > 5:
+                    messages.error(request, "Each rating must be between 1 and 5.")
+                    return redirect('infrafeed')
+
         except ValueError:
-            messages.error(request, "Invalid rating value.")
-            return redirect('cateringfeed')
-        
+            messages.error(request, "Invalid rating value. Please enter a number between 1 and 5.")
+            return redirect('infrafeed')
+
         try:
             user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
+        # Save the feedback
         Catering.objects.create(
             trainee=user_instance,
             catering_name=catering_name,
-            rating=rating,
+            food_quality=food_quality,
+            service_quality=service_quality,
+            Cleanliness=Cleanliness,
+            Affordable=Affordable,
+            overall_satisfaction=overall_satisfaction,
             description=description
         )
 

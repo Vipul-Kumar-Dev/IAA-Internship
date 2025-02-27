@@ -97,11 +97,13 @@
         .btn {
             display: flex;
             justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding-top: 4rem;
+            gap: 2rem;
+            padding-top: 2rem;
         }
 
-        .btn button a{
+        .btn button a {
             text-decoration: none;
         }
 
@@ -183,6 +185,18 @@
             text-decoration: none;
             color: black;
         }
+
+        .message.success {
+            font-size: 25px;
+            font-weight: 600;
+            color: green;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .message.fade-out {
+            opacity: 0;
+        }
     </style>
 </head>
 
@@ -203,11 +217,28 @@
     <div class="container">
         <h2 class="slide-up">Thank you for your FeedBack</h2>
         <div class="btn">
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="message slide-up {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             <button class="slide-up">
                 <span><a href="{% url 'home' %}">Go Back To Home →</a></span>
             </button>
         </div>
     </div>
 </body>
+<script>
+    setTimeout(function () {
+        const messages = document.querySelectorAll('.message');
+        messages.forEach(function (message) {
+            message.classList.add('fade-out');
+        });
+    }, 2000);
+</script>
 
 </html>

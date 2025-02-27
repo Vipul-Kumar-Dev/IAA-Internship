@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
             padding: 0;
         }
 
-        body{
+        body {
             width: 100%;
             height: 100%;
         }
@@ -94,15 +95,197 @@
             align-items: center;
         }
 
-        .container .heading h2{
+        .container .heading h2 {
             font-size: 35px;
             font-weight: bold;
             color: white;
             line-height: 1.2;
             font-family: 'Ubuntu', sans-serif;
         }
+
+        .ContactUsForm {
+            width: 60%;
+            max-width: -webkit-fill-available;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-container,
+        .map-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #ffcc00;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #e6b800;
+        }
+
+        iframe {
+            width: 100%;
+            height: 250px;
+            border-radius: 5px;
+        }
+
+        .footer {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            background-color: black;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            clear: both;
+        }
+
+
+        .footer-logo img {
+            font-size: 36px;
+            display: flex;
+            padding-left: 10rem;
+            width: 8rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+        }
+
+        .quick-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quick-links li {
+            margin: 10px 0;
+        }
+
+        .quick-links a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            transition: 0.3s;
+            flex-direction: row;
+            padding-top: 2rem;
+        }
+
+        .quick-links a:hover {
+            color: yellow;
+        }
+
+        .map iframe {
+            width: 38%;
+            height: 16rem;
+            border: none;
+            display: flex;
+            padding-left: 10.5rem;
+        }
+
+        .subscribe {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            padding: 5px;
+            overflow: hidden;
+        }
+
+        .subscribe input {
+            border: none;
+            padding: 10px;
+            flex: 1;
+            outline: none;
+        }
+
+        .subscribe button {
+            background: yellow;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .footer-bottom {
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            /* Pushes footer to the bottom */
+        }
+
+        .footer {
+            z-index: 10;
+        }
+
+        .footer-section h2 {
+            display: flex;
+            justify-content: left;
+        }
+
+        .formcontainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <!-- Logo Section -->
@@ -121,9 +304,71 @@
         <div class="heading">
             <h2>Contact Us</h2>
         </div>
-        <div class="ContactUsForm">
-
+        <div class="formcontainer">
+            <div class="ContactUsForm">
+                <div class="form-container">
+                    <h2>Contact Us</h2>
+                    <p>Reach out to us for inquiry</p>
+                    <form>
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" placeholder="Please enter full name." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" placeholder="Please enter email address." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea placeholder="Please enter message." required></textarea>
+                        </div>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.3392222441985!2d77.13773461508026!3d28.52952188245859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1c72fb860727%3A0xa793309dbc24f52!2sIndian+Aviation+Academy!5e0!3m2!1sen!2sin!4v1564206883347!5m2!1sen!2sin"
+                        allowfullscreen="" loading="lazy">
+                    </iframe>
+                    <p><strong>Indian Aviation Academy</strong>, Near Indian Spinal Injuries Center, Vasant Kunj, New
+                        Delhi
+                        - 110070</p>
+                    <p><strong>Phone:</strong> +91-11-26134313 (Director's Office)</p>
+                    <p><strong>Phone:</strong> +91-11-26134358/59 (Academy)</p>
+                    <p><strong>Phone:</strong> +91-11-26134301, +91-9315809157 (Hostel)</p>
+                    <p><strong>Website:</strong> <a href="http://www.iaa.edu.in">www.iaa.edu.in</a></p>
+                    <p><strong>Email ID:</strong> edtraining.niamar@aai.aero</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<footer class="footer">
+    <div class="footer-section">
+        <div class="footer-logo"><img src="{% static 'iialogo-login.png' %}"></div>
+        <div class="map">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.3392222441985!2d77.13773461508026!3d28.52952188245859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1c72fb860727%3A0xa793309dbc24f52!2sIndian+Aviation+Academy!5e0!3m2!1sen!2sin!4v1564206883347!5m2!1sen!2sin"
+                allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <h2>Quick Links</h2>
+        <ul class="quick-links">
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+        <ul class="quick-links">
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Website Policies</a></li>
+        </ul>
+    </div>
+</footer>
+
+<div class="footer-bottom">
+    Copyright © 2024. All Rights Reserved by Indian Aviation Academy.
+</div>
+
 </html>

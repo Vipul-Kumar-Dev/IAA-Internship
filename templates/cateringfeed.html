@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catering FeedBack</title>
+    <title>Catering Feedback</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
@@ -81,22 +81,26 @@
 
         .heading h1 {
             font-size: 6rem;
-            padding: 20px;
+            padding: 30px;
             font-family: 'Ubuntu', sans-serif;
-            margin: 8rem 0rem -23rem 5rem;
-            text-shadow: 0px 7px 11px rgba(0,85,166,0.71);
+            text-align: center;
+            text-shadow: 0px 7px 11px rgba(0, 85, 166, 0.71);
         }
 
         .feedback-container {
+            width: 50%;
             background: linear-gradient(to right, #0055a6, #b2e8ff);
             padding: 2rem;
             border-radius: 12px;
-            max-width: 40%;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: center;
             flex-direction: column;
-            margin: 0rem 10rem 0rem auto;
+            align-items: center;
+        }
+
+        form {
+            width: -webkit-fill-available;
         }
 
         .feedback-container h2 {
@@ -108,153 +112,79 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 1rem;
             padding-top: 1rem;
         }
 
         .form-group label {
             font-weight: bold;
-            text-align: left;
+            font-size: large;
         }
 
         .form-group input,
         .form-group textarea {
-            width: 30rem;
-            padding: 0.8rem;
+            width: -webkit-fill-available;
+            padding: 1rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 2rem;
             font-size: 1rem;
-            outline: none;
             color: #333;
+            outline: none;
         }
 
         .form-group textarea {
             resize: none;
         }
 
-        /* From Uiverse.io by Lu2ovic */
         .rating {
+            direction: rtl;
+            unicode-bidi: bidi-override;
             display: flex;
             justify-content: space-evenly;
-            flex-direction: row-reverse;
-            gap: 0.3rem;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            gap: 5px;
         }
 
         .rating input {
             display: none;
         }
 
-        .rating label .svgOne {
-            stroke: #ccc;
-            fill: rgba(255, 217, 0, 0);
-            transition:
-                stroke 0.5s ease,
-                fill 0.5s ease;
-        }
-
-        .rating label .svgTwo {
-            position: absolute;
-            top: -1px;
-            fill: gold;
-            stroke: rgba(255, 217, 0, 0);
-            opacity: 0;
-            transition:
-                stroke 0.5s ease,
-                fill 0.5s ease,
-                opacity 0.5s ease;
-        }
-
         .rating label {
-            position: relative;
+            font-size: 2.5rem;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 3px;
-            transition: all 0.5s ease;
+            transition: transform 0.3s ease, color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+            color: rgba(255, 255, 255, 0.2);
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
         }
 
-        /* Étoiles sélectionnées ou survolées */
-        .rating label:hover .svgOne,
-        .rating label:hover~label .svgOne {
-            stroke: gold;
+        .rating label:hover,
+        .rating label:hover~label {
+            color: rgba(255, 255, 0, 1);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.5);
+            transform: scale(1.2);
         }
 
-        .rating input:checked~label .svgOne {
-            stroke: #cccccc00;
+        .rating input:checked~label {
+            color: rgba(255, 215, 0, 1);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 25px rgba(255, 140, 0, 0.8);
+            animation: pop 0.4s ease-in-out;
         }
 
-        .rating input:checked~label .svgTwo {
-            transform: rotateX(0deg) rotateY(0deg) translateY(0px);
-            opacity: 1;
-            animation: displayStar 0.5s cubic-bezier(0.75, 0.41, 0.82, 1.2);
-        }
-
-        @keyframes displayStar {
+        @keyframes pop {
             0% {
-                transform: rotateX(100deg) rotateY(100deg) translateY(10px);
-            }
-
-            100% {
-                transform: rotateX(0deg) rotateY(0deg) translateY(0px);
-            }
-        }
-
-        .ombre {
-            background: radial-gradient(ellipse closest-side,
-                    rgba(0, 0, 0, 0.24),
-                    rgba(0, 0, 0, 0));
-            width: 30px;
-            height: 8px;
-            opacity: 0;
-            transition: opacity 0.6s ease 0.2s;
-        }
-
-        /* Étoiles sélectionnées ou survolées */
-        .rating label:hover .ombre,
-        .rating label:hover~label .ombre {
-            opacity: 0.3;
-        }
-
-        .rating input:checked~label .ombre {
-            opacity: 1;
-        }
-
-        /* Animation de secousse uniquement au hover */
-        .rating label:hover .svgTwo:hover {
-            animation:
-                chackStar 0.6s ease-out,
-                displayStar none 1s;
-        }
-
-        @keyframes chackStar {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            20% {
-                transform: rotate(-20deg);
+                transform: scale(1);
             }
 
             50% {
-                transform: rotate(20deg);
-            }
-
-            80% {
-                transform: rotate(-20deg);
+                transform: scale(1.4);
             }
 
             100% {
-                transform: rotate(0deg);
+                transform: scale(1.2);
             }
         }
 
-        /* From Uiverse.io by glisovic01 */
         .btn {
-            display: inline-block;
+            display: flex;
             font-family: sans-serif;
             font-weight: 600;
             font-size: 16px;
@@ -263,8 +193,8 @@
             padding: 1rem 3rem;
             border-radius: 30em;
             border-style: none;
-            cursor: pointer;
             position: relative;
+            cursor: pointer;
             z-index: 1;
             overflow: hidden;
             text-decoration: none;
@@ -308,7 +238,6 @@
             clear: both;
             margin-top: 5rem;
         }
-
 
         .footer-logo img {
             font-size: 36px;
@@ -393,7 +322,6 @@
 
         .content {
             flex: 1;
-            /* Pushes footer to the bottom */
         }
 
         .footer {
@@ -404,12 +332,18 @@
             display: flex;
             justify-content: left;
         }
+
+        .maincontent {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <!-- Logo Section -->
         <img src="{% static 'img_logo.png' %}" class="slide-up">
         <div class="slide-up">
             <h1>Indian Aviation Academy</h1>
@@ -422,130 +356,112 @@
         </div>
     </header>
     <div class="container">
-        <div class="heading">
-            <h1>Catering<br>Feedback</h1>
-        </div>
-        <div class="feedback-container">
-            <h2>Feedback Form</h2>
-            <form action="{% url 'cateringfeed' %}" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="catering_name">Catering Name:</label>
-                    <input type="text" id="catering_name" name="catering_name" placeholder="Enter Catering Name" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>Rate Us:</label>
-                    <div class="rating">
-                        <input value="5" name="rating" id="star5" type="radio" />
-                        <label title="5 stars" for="star5">
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgOne">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgTwo">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <div class="ombre"></div>
-                        </label>
-    
-                        <input value="4" name="rating" id="star4" type="radio" />
-                        <label title="4 stars" for="star4">
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgOne">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgTwo">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <div class="ombre"></div>
-                        </label>
-    
-                        <input value="3" name="rating" id="star3" type="radio" />
-                        <label title="3 stars" for="star3">
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgOne">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgTwo">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <div class="ombre"></div>
-                        </label>
-    
-                        <input value="2" name="rating" id="star2" type="radio" />
-                        <label title="2 stars" for="star2">
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgOne">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgTwo">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <div class="ombre"></div>
-                        </label>
-    
-                        <input value="1" name="rating" id="star1" type="radio" />
-                        <label title="1 star" for="star1">
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgOne">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#000000"
-                                fill="none" viewBox="0 0 24 24" height="35" width="35" xmlns="http://www.w3.org/2000/svg"
-                                class="svgTwo">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                </polygon>
-                            </svg>
-                            <div class="ombre"></div>
-                        </label>
+        <div class="maincontent">
+            <div class="heading">
+                <h1>Catering Feedback</h1>
+            </div>
+            <div class="feedback-container">
+                <h2>Feedback Form</h2>
+                <form action="{% url 'cateringfeed' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="catering">Catering Service:</label>
+                        <input type="text" id="catering" name="catering_name" placeholder="Enter catering service name" required>
                     </div>
-    
+
+                    <div class="form-group">
+                        <label>Food Quality:</label>
+                        <div class="rating">
+                            <input value="5" name="food_quality" id="food_quality5" type="radio" />
+                            <label title="5 stars" for="food_quality5">★</label>
+                            <input value="4" name="food_quality" id="food_quality4" type="radio" />
+                            <label title="4 stars" for="food_quality4">★</label>
+                            <input value="3" name="food_quality" id="food_quality3" type="radio" />
+                            <label title="3 stars" for="food_quality3">★</label>
+                            <input value="2" name="food_quality" id="food_quality2" type="radio" />
+                            <label title="2 stars" for="food_quality2">★</label>
+                            <input value="1" name="food_quality" id="food_quality1" type="radio" />
+                            <label title="1 star" for="food_quality1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Service Quality:</label>
+                        <div class="rating">
+                            <input value="5" name="service_quality" id="service_quality5" type="radio" />
+                            <label title="5 stars" for="service_quality5">★</label>
+                            <input value="4" name="service_quality" id="service_quality4" type="radio" />
+                            <label title="4 stars" for="service_quality4">★</label>
+                            <input value="3" name="service_quality" id="service_quality3" type="radio" />
+                            <label title="3 stars" for="service_quality3">★</label>
+                            <input value="2" name="service_quality" id="service_quality2" type="radio" />
+                            <label title="2 stars" for="service_quality2">★</label>
+                            <input value="1" name="service_quality" id="service_quality1" type="radio" />
+                            <label title="1 star" for="service_quality1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cleanliness:</label>
+                        <div class="rating">
+                            <input value="5" name="Cleanliness" id="Cleanliness5" type="radio" />
+                            <label title="5 stars" for="Cleanliness5">★</label>
+                            <input value="4" name="Cleanliness" id="Cleanliness4" type="radio" />
+                            <label title="4 stars" for="Cleanliness4">★</label>
+                            <input value="3" name="Cleanliness" id="Cleanliness3" type="radio" />
+                            <label title="3 stars" for="Cleanliness3">★</label>
+                            <input value="2" name="Cleanliness" id="Cleanliness2" type="radio" />
+                            <label title="2 stars" for="Cleanliness2">★</label>
+                            <input value="1" name="Cleanliness" id="Cleanliness1" type="radio" />
+                            <label title="1 star" for="Cleanliness1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Affordable:</label>
+                        <div class="rating">
+                            <input value="5" name="Affordable" id="Affordable5" type="radio" />
+                            <label title="5 stars" for="Affordable5">★</label>
+                            <input value="4" name="Affordable" id="Affordable4" type="radio" />
+                            <label title="4 stars" for="Affordable4">★</label>
+                            <input value="3" name="Affordable" id="Affordable3" type="radio" />
+                            <label title="3 stars" for="Affordable3">★</label>
+                            <input value="2" name="Affordable" id="Affordable2" type="radio" />
+                            <label title="2 stars" for="Affordable2">★</label>
+                            <input value="1" name="Affordable" id="Affordable1" type="radio" />
+                            <label title="1 star" for="Affordable1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Overall Satisfaction:</label>
+                        <div class="rating">
+                            <input value="5" name="overall_satisfaction" id="overall_satisfaction5" type="radio" />
+                            <label title="5 stars" for="overall_satisfaction5">★</label>
+                            <input value="4" name="overall_satisfaction" id="overall_satisfaction4" type="radio" />
+                            <label title="4 stars" for="overall_satisfaction4">★</label>
+                            <input value="3" name="overall_satisfaction" id="overall_satisfaction3" type="radio" />
+                            <label title="3 stars" for="overall_satisfaction3">★</label>
+                            <input value="2" name="overall_satisfaction" id="overall_satisfaction2" type="radio" />
+                            <label title="2 stars" for="overall_satisfaction2">★</label>
+                            <input value="1" name="overall_satisfaction" id="overall_satisfaction1" type="radio" />
+                            <label title="1 star" for="overall_satisfaction1">★</label>
+                        </div>
+                    </div>
+
                     <!-- Description -->
                     <div class="form-group">
                         <label for="comments">Description:</label>
-                        <textarea id="comments" name="comments" placeholder="Share your feedback here..."
-                            rows="4"></textarea>
+                        <textarea id="comments" name="comments" placeholder="Share your feedback here..." rows="4"></textarea>
                     </div>
-    
+
                     <!-- Submit Button -->
                     <button type="submit" class="btn">Submit Feedback →</button>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-    
+
 </body>
 <footer class="footer">
     <div class="footer-section">
@@ -571,4 +487,5 @@
 <div class="footer-bottom">
     Copyright © 2024. All Rights Reserved by Indian Aviation Academy.
 </div>
+
 </html>
