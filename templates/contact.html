@@ -314,20 +314,27 @@
                 <div class="form-container">
                     <h2>Contact Us</h2>
                     <p>Reach out to us for inquiry</p>
-                    <form>
+                    <form action="{% url 'contact' %}" method="POST">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label>Full Name *</label>
-                            <input type="text" placeholder="Please enter full name." required>
+                            <input type="text" name="full_name" class="Name" placeholder="Please enter full name." required>
                         </div>
                         <div class="form-group">
                             <label>Email Address *</label>
-                            <input type="email" placeholder="Please enter email address." required>
+                            <input type="email" name="email" class="Email" placeholder="Please enter email address." required>
                         </div>
                         <div class="form-group">
                             <label>Message *</label>
-                            <textarea placeholder="Please enter message." required></textarea>
+                            <textarea name="message" placeholder="Please enter message." required></textarea>
                         </div>
                         <button type="submit">Submit</button>
+                    
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p style="color: green;">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </form>
                 </div>
                 <div class="map-container">

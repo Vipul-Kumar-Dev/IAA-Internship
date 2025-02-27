@@ -1,121 +1,100 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-import matplotlib.pyplot as plt
-import base64
-from openpyxl import Workbook
-from openpyxl.styles import Alignment
-from django.utils.timezone import localtime
-from datetime import datetime
-from io import BytesIO
-from django.utils.timezone import now
+from django.core.mail import EmailMessage
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Faculty, Infrastructure, Course, Catering
 from django.contrib.auth import authenticate, login, logout, get_user_model
 
-def download_feedback(request):
-    # Create a new Excel workbook and worksheet
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Feedback Data"
-
-    # Set the header row in the Excel sheet
-    headers = ['Feedback Category', 'Trainee', 'Name', 'Rating', 'Description', 'Submitted At']
-    ws.append(headers)
-
-    # Set some formatting for the header row
-    for cell in ws[1]:
-        cell.alignment = Alignment(horizontal='center', vertical='center')
-
-    # Get all feedback data from the database
-    feedback_data = []
-
-    # Fetch data for each feedback category
-    for model, category in [
-        (Infrastructure, 'Infrastructure'),
-        (Faculty, 'Faculty'),
-        (Course, 'Course'),
-        (Catering, 'Catering'),
-    ]:
-        feedback_data += [
-            (category, feedback.trainee.username, feedback.infrastructure_name if model == Infrastructure else feedback.faculty_name if model == Faculty else feedback.course_name if model == Course else feedback.catering_name,
-             feedback.rating, feedback.description, localtime(feedback.submitted_at).strftime("%Y-%m-%d %H:%M:%S"))
-            for feedback in model.objects.all()
-        ]
-
-    # Add the data to the worksheet
-    for feedback in feedback_data:
-        ws.append(feedback)
-
-    # Set the filename based on the current date and time
-    file_name = f"feedback_data_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
-    
-    # Set the response to download the Excel file
-    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response['Content-Disposition'] = f'attachment; filename={file_name}'
-    wb.save(response)
-
-    return response
-
-def get_filtered_feedback(model, filter_type):
-    today = now().date()
-    
-    if filter_type == "day":
-        return model.objects.filter(submitted_at__date=today).count()
-    elif filter_type == "month":
-        return model.objects.filter(submitted_at__year=today.year, submitted_at__month=today.month).count()
-    elif filter_type == "year":
-        return model.objects.filter(submitted_at__year=today.year).count()
-    
-    return 0
-
-def get_feedback_data(request):
-    filter_type = request.GET.get('filter', 'month')
-    
-    data = {
-        "infrastructure": get_filtered_feedback(Infrastructure, filter_type),
-        "faculty": get_filtered_feedback(Faculty, filter_type),
-        "course": get_filtered_feedback(Course, filter_type),
-        "catering": get_filtered_feedback(Catering, filter_type),
-    }
-
-    return JsonResponse(data)
-
-def get_feedback_data(request):
-    def get_ratings(model):
-        return {i: model.objects.filter(rating=i).count() for i in range(1, 6)}
-
-    data = {
-        "infrastructure": get_ratings(Infrastructure),
-        "faculty": get_ratings(Faculty),
-        "course": get_ratings(Course),
-        "catering": get_ratings(Catering),
-    }
-
-    return JsonResponse(data)
-
-def generate_chart(feedbacks, title):
-    rating_counts = {i: feedbacks.filter(rating=i).count() for i in range(1, 6)}
-
-    plt.figure(figsize=(6, 4))
-    plt.bar(rating_counts.keys(), rating_counts.values(), color=['red', 'orange', 'yellow', 'green', 'blue'])
-    plt.xlabel('Ratings')
-    plt.ylabel('Number of Feedbacks')
-    plt.title(title)
-
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    encoded_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    buffer.close()
-
-    return encoded_image
-
 User = get_user_model()
 
+from openpyxl import Workbook
+from django.http import HttpResponse
+
 def welcome_page(request):
+    return render(request, 'welcome.html')
+
+def download_faculty_feedback(request):
+    faculty_feedbacks = Faculty.objects.all()
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=faculty_feedbacks.xlsx'
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Faculty Feedbacks"
+    
+    # Create header row
+    headers = ['Faculty Name', 'Satisfaction', 'Behavior', 'Knowledge', 'Interaction', 'Clarity', 'Response', 'Examples', 'Motivation', 'Comments']
+    ws.append(headers)
+    
+    # Add feedback data
+    for feedback in faculty_feedbacks:
+        ws.append([feedback.faculty_name, feedback.satisfaction, feedback.behavior, feedback.knowledge, feedback.interaction, feedback.clarity, feedback.response, feedback.examples, feedback.motivation, feedback.description])
+    
+    wb.save(response)
+    return response
+
+def download_infrastructure_feedback(request):
+    infrastructure_feedbacks = Infrastructure.objects.all()
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=infrastructure_feedbacks.xlsx'
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Infrastructure Feedbacks"
+    
+    # Create header row
+    headers = ['Infrastructure Name', 'Satisfaction', 'Quality', 'Resources', 'Maintenance', 'Safety', 'Comments']
+    ws.append(headers)
+    
+    # Add feedback data
+    for feedback in infrastructure_feedbacks:
+        ws.append([feedback.infrastructure_name, feedback.satisfaction, feedback.quality, feedback.resources, feedback.maintenance, feedback.safety, feedback.description])
+    
+    wb.save(response)
+    return response
+
+def download_course_feedback(request):
+    course_feedbacks = Course.objects.all()
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=course_feedbacks.xlsx'
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Course Feedbacks"
+    
+    # Create header row
+    headers = ['Course Name', 'Satisfaction', 'Content', 'Instructor', 'Materials', 'Comments']
+    ws.append(headers)
+    
+    # Add feedback data
+    for feedback in course_feedbacks:
+        ws.append([feedback.course_name, feedback.satisfaction, feedback.content, feedback.instructor, feedback.materials, feedback.description])
+    
+    wb.save(response)
+    return response
+
+def download_catering_feedback(request):
+    catering_feedbacks = Catering.objects.all()
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=catering_feedbacks.xlsx'
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Catering Feedbacks"
+    
+    # Create header row
+    headers = ['Catering Name', 'Overall Satisfaction', 'Food Quality', 'Service Quality', 'Cleanliness', 'Affordable', 'Comments']
+    ws.append(headers)
+    
+    # Add feedback data
+    for feedback in catering_feedbacks:
+        ws.append([feedback.catering_name, feedback.overall_satisfaction, feedback.food_quality, feedback.service_quality, feedback.Cleanliness, feedback.Affordable, feedback.description])
+    
+    wb.save(response)
+    return response
+
     return render(request, "welcome.html")
 
 def login_page(request):
@@ -410,10 +389,49 @@ def cateringfeed(request):
     return render(request, "cateringfeed.html")
 
 def contact(request):
+    if request.method == "POST":
+        full_name = request.POST.get("full_name")
+        user_email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        if full_name and user_email and message:
+            subject = f"New Contact Form Submission from {full_name}"
+            message_body = f"Name: {full_name}\nEmail: {user_email}\nMessage: {message}"
+            from_email = "vipulsam1234@gmail.com"  # Must match SMTP settings
+            recipient_email = ["anas.shaikh7827@gmail.com"]  # IAA Email
+
+            try:
+                email_message = EmailMessage(
+                    subject=subject,
+                    body=message_body,
+                    from_email=from_email,
+                    to=recipient_email,
+                    reply_to=[user_email],  # Allows IAA to reply directly to the sender
+                )
+                email_message.send()
+                messages.success(request, "Your message has been sent successfully!")
+            except Exception as e:
+                messages.error(request, "Error sending message. Please try again later.")
+
+        return redirect("contact")  # Redirect back to contact page to show success message
+
     return render(request, "contact.html")
 
+@login_required
 def admin_home(request):
-    return render(request, 'adminhome.html')
+    faculty_feedbacks = Faculty.objects.all()
+    infrastructure_feedbacks = Infrastructure.objects.all()
+    course_feedbacks = Course.objects.all()
+    catering_feedbacks = Catering.objects.all()
+    
+    context = {
+        'faculty_feedbacks': faculty_feedbacks,
+        'infrastructure_feedbacks': infrastructure_feedbacks,
+        'course_feedbacks': course_feedbacks,
+        'catering_feedbacks': catering_feedbacks,
+    }
+    return render(request, 'adminhome.html', context)
+
 
 def thankyou(request):
     return render(request, "thankyou.html")

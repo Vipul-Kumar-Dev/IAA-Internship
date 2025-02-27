@@ -35,6 +35,8 @@ urlpatterns = [
     path('ThankYou', v1.thankyou, name='thankyou'),
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico', permanent=True)),
     path('adminhome/', v1.admin_home, name='adminhome'),
-    path('feedback-data/', v1.get_feedback_data, name='get_feedback_data'),
-    path('download-feedback/', v1.download_feedback, name='download-feedback'),
+    path('download_faculty_feedback/', v1.download_faculty_feedback, name='download_faculty_feedback'),
+    path('download_infrastructure_feedback/', v1.download_infrastructure_feedback, name='download_infrastructure_feedback'),
+    path('download_course_feedback/', v1.download_course_feedback, name='download_course_feedback'),
+    path('download_catering_feedback/', v1.download_catering_feedback, name='download_catering_feedback'),
 ]

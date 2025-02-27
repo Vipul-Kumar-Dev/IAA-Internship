@@ -1,150 +1,545 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>IAA</title>
+    <link rel="icon" href="{% static 'img_logo.png' %}" type="image/x-icon">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
+            padding: 0;
         }
 
-        h2 {
-            text-align: center;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 1rem 0rem 0rem -32.5rem;
+        }
+
+        header p {
+            margin: 0rem 0rem 0rem -32.5rem;
+            font-size: 14px;
+        }
+
+        .logos img {
+            height: 80px;
+            padding-left: 1rem;
+        }
+
+        header img {
+            padding-left: 3.5rem;
+        }
+
+        .logos {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            background: url("{% static 'login_bg.png' %}") no-repeat center;
+            background-size: cover;
+        }
+
+        .container {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
         }
 
-        #filter-select {
-            display: block;
-            margin: 10px auto;
-            padding: 8px;
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
         }
 
-        .Chart1, .Chart2 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-            align-items: center;
-            gap: 20px;
+        tr {
+            background-color: #f2f2f2;
         }
 
-        .chart-container {
-            width: 300px;
-            height: 300px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            padding: 20px;
-            margin: 10px;
+        th {
+            background: #0055a6;
+            color: white;
         }
 
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .chart-title {
+        .heading1 {
             text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
+            padding: 20px;
+            font-size: 1.5rem;
+        }
+
+        .heading2 {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 5px;
+        }
+
+        .download-btn {
+            height: 45px;
+            width: 95px;
+            cursor: pointer;
+            border: none;
+            background: linear-gradient(to right, #0055a6, #b2e8ff);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .button-content {
+            transform: translateY(-45px);
+            transition: all 250ms ease-in-out;
+        }
+
+        .svg-container,
+        .text-container {
+            height: 45px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .text-container .text {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 600;
+            opacity: 1;
+            transition: opacity ease-in-out 250ms;
+        }
+
+        .download-icon {
+            height: 25px;
+            width: 25px;
+            fill: #fff;
+            opacity: 0;
+            transition: opacity ease-in-out 250ms;
+        }
+
+        /* hover state for the button */
+        .download-btn:hover .button-content {
+            transform: translateY(0px);
+        }
+
+        .download-btn:hover .text {
+            opacity: 0;
+        }
+
+        .download-btn:hover .download-icon {
+            opacity: 1;
+        }
+
+        .download-btn:focus .download-icon {
+            -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
+            animation: heartbeat 1.5s ease-in-out infinite both;
+        }
+
+        @-webkit-keyframes heartbeat {
+            from {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-transform-origin: center center;
+                transform-origin: center center;
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+
+            10% {
+                -webkit-transform: scale(0.91);
+                transform: scale(0.91);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+            }
+
+            17% {
+                -webkit-transform: scale(0.98);
+                transform: scale(0.98);
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+
+            33% {
+                -webkit-transform: scale(0.87);
+                transform: scale(0.87);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+            }
+
+            45% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+        }
+
+        @keyframes heartbeat {
+            from {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-transform-origin: center center;
+                transform-origin: center center;
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+
+            10% {
+                -webkit-transform: scale(0.91);
+                transform: scale(0.91);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+            }
+
+            17% {
+                -webkit-transform: scale(0.98);
+                transform: scale(0.98);
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+
+            33% {
+                -webkit-transform: scale(0.87);
+                transform: scale(0.87);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+            }
+
+            45% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+            }
+        }
+
+        .download .Btn {
+            display: flex;
+            margin: -2rem 1rem 1rem auto;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: .3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background-color: #0055a6;
+        }
+
+        .download .sign {
+            width: 100%;
+            transition-duration: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download .sign svg {
+            width: 17px;
+        }
+
+        .download .sign svg path {
+            fill: white;
+        }
+
+        .download .text {
+            position: absolute;
+            right: -5%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: .3s;
+        }
+
+        .download .text a{
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* hover effect on button width */
+        .download .Btn:hover {
+            width: 125px;
+            border-radius: 40px;
+            transition-duration: .3s;
+        }
+
+        .download .Btn:hover .sign {
+            width: 30%;
+            transition-duration: .3s;
+            padding-left: 20px;
+        }
+
+        /* hover effect button's text */
+        .download .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: .3s;
+            padding-right: 10px;
+        }
+
+        /* button click effect*/
+        .download .Btn:active {
+            transform: translate(2px, 2px);
         }
     </style>
 </head>
 
 <body>
-
-    <h2>Feedback Insights</h2>
-    <label for="filter-select">Show Feedback for:</label>
-    <select id="filter-select">
-        <option value="day">Today</option>
-        <option value="month" selected>This Month</option>
-        <option value="year">This Year</option>
-    </select>
-
-    <div class="Chart1">
-        <div class="chart-container">
-            <div class="chart-title">Infrastructure Feedback</div>
-            <canvas id="infrastructureChart"></canvas>
+    <header>
+        <img src="{% static 'img_logo.png' %}" class="slide-up">
+        <div class="slide-up">
+            <h1>Indian Aviation Academy</h1>
+            <p><b>Nurturing Aviation for the Future</b></p>
         </div>
-        <div class="chart-container">
-            <div class="chart-title">Faculty Feedback</div>
-            <canvas id="facultyChart"></canvas>
+        <div class="logos">
+            <img src="{% static 'logo1.jpg' %}" class="slide-up">
+            <img src="{% static 'logo2.jpg' %}" style="width: 100px; height: 85px;" class="slide-up">
+            <img src="{% static 'logo3.jpg' %}" class="slide-up" style="padding-right: 3rem;">
         </div>
+    </header>
+    <div class="container">
+        <div class="heading1">
+            <h1>Admin Home - Feedbacks</h1>
+        </div>
+
+        <div class="download">
+            <button class="Btn">
+                <div class="sign"><svg viewBox="0 0 512 512">
+                        <path
+                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                        </path>
+                    </svg></div>
+                <div class="text"><a href="{% url 'logout' %}">Logout</a></div>
+            </button>
+        </div>
+
+        <div class="heading2">
+            <h2>Faculty Feedbacks (Total: {{ faculty_feedbacks.count }})</h2>
+            <button class="download-btn" onclick="window.location.href='{% url 'download_faculty_feedback' %}'">
+                <div class="button-content">
+                    <div class="svg-container">
+                        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19.479 10.092c-.212-3.951-3.473-7.092-7.479-7.092-4.005 0-7.267 3.141-7.479 7.092-2.57.463-4.521 2.706-4.521 5.408 0 3.037 2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5 0-2.702-1.951-4.945-4.521-5.408zm-7.479 6.908l-4-4h3v-4h2v4h3l-4 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="text-container">
+                        <div class="text">Download</div>
+                    </div>
+                </div>
+            </button>
+
+        </div>
+        <table>
+            <tr>
+                <th>Faculty Name</th>
+                <th>Behavior</th>
+                <th>Knowledge</th>
+                <th>Interaction</th>
+                <th>Clarity</th>
+                <th>Response</th>
+                <th>Examples</th>
+                <th>Motivation</th>
+                <th>Satisfaction</th>
+                <th>Comments</th>
+            </tr>
+            {% for feedback in faculty_feedbacks %}
+            <tr>
+                <td>{{ feedback.faculty_name }}</td>
+                <td>{{ feedback.behavior }}</td>
+                <td>{{ feedback.knowledge }}</td>
+                <td>{{ feedback.interaction }}</td>
+                <td>{{ feedback.clarity }}</td>
+                <td>{{ feedback.response }}</td>
+                <td>{{ feedback.examples }}</td>
+                <td>{{ feedback.motivation }}</td>
+                <td>{{ feedback.satisfaction }}</td>
+                <td>{{ feedback.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="heading2">
+            <h2>Infrastructure Feedbacks (Total: {{ infrastructure_feedbacks.count }})</h2>
+            <button class="download-btn" onclick="window.location.href='{% url 'download_infrastructure_feedback' %}'">
+                <div class="button-content">
+                    <div class="svg-container">
+                        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19.479 10.092c-.212-3.951-3.473-7.092-7.479-7.092-4.005 0-7.267 3.141-7.479 7.092-2.57.463-4.521 2.706-4.521 5.408 0 3.037 2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5 0-2.702-1.951-4.945-4.521-5.408zm-7.479 6.908l-4-4h3v-4h2v4h3l-4 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="text-container">
+                        <div class="text">Download</div>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <table>
+            <tr>
+                <th>Infrastructure Name</th>
+                <th>Quality</th>
+                <th>Resources</th>
+                <th>Maintenance</th>
+                <th>Safety</th>
+                <th>Satisfaction</th>
+                <th>Comments</th>
+            </tr>
+            {% for feedback in infrastructure_feedbacks %}
+            <tr>
+                <td>{{ feedback.infrastructure_name }}</td>
+                <td>{{ feedback.quality }}</td>
+                <td>{{ feedback.resources }}</td>
+                <td>{{ feedback.maintenance }}</td>
+                <td>{{ feedback.safety }}</td>
+                <td>{{ feedback.satisfaction }}</td>
+                <td>{{ feedback.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="heading2">
+            <h2>Course Feedbacks (Total: {{ course_feedbacks.count }})</h2>
+            <button class="download-btn" onclick="window.location.href='{% url 'download_course_feedback' %}'">
+                <div class="button-content">
+                    <div class="svg-container">
+                        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19.479 10.092c-.212-3.951-3.473-7.092-7.479-7.092-4.005 0-7.267 3.141-7.479 7.092-2.57.463-4.521 2.706-4.521 5.408 0 3.037 2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5 0-2.702-1.951-4.945-4.521-5.408zm-7.479 6.908l-4-4h3v-4h2v4h3l-4 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="text-container">
+                        <div class="text">Download</div>
+                    </div>
+                </div>
+            </button>
+
+        </div>
+        <table>
+            <tr>
+                <th>Course Name</th>
+                <th>Content</th>
+                <th>Instructor</th>
+                <th>Materials</th>
+                <th>Satisfaction</th>
+                <th>Comments</th>
+            </tr>
+            {% for feedback in course_feedbacks %}
+            <tr>
+                <td>{{ feedback.course_name }}</td>
+                <td>{{ feedback.content }}</td>
+                <td>{{ feedback.instructor }}</td>
+                <td>{{ feedback.materials }}</td>
+                <td>{{ feedback.satisfaction }}</td>
+                <td>{{ feedback.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="heading2">
+            <h2>Catering Feedbacks (Total: {{ catering_feedbacks.count }})</h2>
+            <button class="download-btn" onclick="window.location.href='{% url 'download_catering_feedback' %}'">
+                <div class="button-content">
+                    <div class="svg-container">
+                        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19.479 10.092c-.212-3.951-3.473-7.092-7.479-7.092-4.005 0-7.267 3.141-7.479 7.092-2.57.463-4.521 2.706-4.521 5.408 0 3.037 2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5 0-2.702-1.951-4.945-4.521-5.408zm-7.479 6.908l-4-4h3v-4h2v4h3l-4 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="text-container">
+                        <div class="text">Download</div>
+                    </div>
+                </div>
+            </button>
+
+        </div>
+        <table>
+            <tr>
+                <th>Catering Name</th>
+                <th>Food Quality</th>
+                <th>Service Quality</th>
+                <th>Cleanliness</th>
+                <th>Affordable</th>
+                <th>Overall Satisfaction</th>
+                <th>Comments</th>
+            </tr>
+            {% for feedback in catering_feedbacks %}
+            <tr>
+                <td>{{ feedback.catering_name }}</td>
+                <td>{{ feedback.food_quality }}</td>
+                <td>{{ feedback.service_quality }}</td>
+                <td>{{ feedback.Cleanliness }}</td>
+                <td>{{ feedback.Affordable }}</td>
+                <td>{{ feedback.overall_satisfaction }}</td>
+                <td>{{ feedback.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    <div class="Chart2">
-        <div class="chart-container">
-            <div class="chart-title">Course Feedback</div>
-            <canvas id="courseChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <div class="chart-title">Catering Feedback</div>
-            <canvas id="cateringChart"></canvas>
-        </div>
-    </div>
-
-    <script>
-        function fetchDataAndUpdateCharts(filterType) {
-            fetch(`/feedback-data/?filter=${filterType}`)
-                .then(response => response.json())
-                .then(data => {
-                    updateChart(infrastructureChart, data.infrastructure);
-                    updateChart(facultyChart, data.faculty);
-                    updateChart(courseChart, data.course);
-                    updateChart(cateringChart, data.catering);
-                });
-        }
-
-        function createChart(ctx, title) {
-            return new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Total Feedback'],
-                    datasets: [{
-                        label: title,
-                        data: [0],
-                        backgroundColor: ['#4e73df']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    }
-                }
-            });
-        }
-
-        function updateChart(chart, data) {
-            chart.data.datasets[0].data = [data || 0];
-            chart.update();
-        }
-
-        const infrastructureChart = createChart(document.getElementById('infrastructureChart').getContext('2d'), "Infrastructure Feedback");
-        const facultyChart = createChart(document.getElementById('facultyChart').getContext('2d'), "Faculty Feedback");
-        const courseChart = createChart(document.getElementById('courseChart').getContext('2d'), "Course Feedback");
-        const cateringChart = createChart(document.getElementById('cateringChart').getContext('2d'), "Catering Feedback");
-
-        document.getElementById('filter-select').addEventListener('change', function () {
-            fetchDataAndUpdateCharts(this.value);
-        });
-
-        setInterval(function () {
-            const filterType = document.getElementById('filter-select').value;
-            fetchDataAndUpdateCharts(filterType);
-        }, 1000);
-
-        fetchDataAndUpdateCharts('month');
-    </script>
-
 </body>
 
 </html>
