@@ -167,7 +167,8 @@ def home_page(request):
         return redirect('login')
 
     firstname = request.session.get('user_firstname', '')
-    return render(request, "home.html", {"firstname": firstname})
+    return render(request, "home.html", {"firstname": firstname, "messages": messages.get_messages(request)})
+
 
 def logout_view(request):
     if not request.user.is_staff:

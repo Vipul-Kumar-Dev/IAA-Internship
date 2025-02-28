@@ -56,11 +56,9 @@
 
         header h1 {
             font-size: 20px;
-            margin: 1rem 0rem 0rem -32.5rem;
         }
 
         header p {
-            margin: 0rem 0rem 0rem -32.5rem;
             font-size: 14px;
         }
 
@@ -78,6 +76,9 @@
             flex-direction: row;
             justify-content: space-evenly;
             align-items: center;
+            aspect-ratio: 3;
+            object-fit: contain;
+            padding-right: 2rem;
         }
 
         .container .heading h1 {
@@ -170,12 +171,11 @@
         .container .feed {
             display: flex;
             flex-wrap: wrap;
-            /* Allow cards to wrap to the next row */
             justify-content: space-evenly;
             gap: 20px;
+            padding: 0rem 1rem;
         }
 
-        /* From Uiverse.io by vinodjangid07 */
         .Btn {
             display: flex;
             margin: -2rem 1rem 1rem auto;
@@ -193,7 +193,6 @@
             background-color: #0055a6;
         }
 
-        /* plus sign */
         .sign {
             width: 100%;
             transition-duration: .3s;
@@ -210,7 +209,6 @@
             fill: white;
         }
 
-        /* text */
         .text {
             position: absolute;
             right: -5%;
@@ -222,7 +220,6 @@
             transition-duration: .3s;
         }
 
-        /* hover effect on button width */
         .Btn:hover {
             width: 125px;
             border-radius: 40px;
@@ -235,7 +232,6 @@
             padding-left: 20px;
         }
 
-        /* hover effect button's text */
         .Btn:hover .text {
             opacity: 1;
             width: 70%;
@@ -243,14 +239,12 @@
             padding-right: 10px;
         }
 
-        /* button click effect*/
         .Btn:active {
             transform: translate(2px, 2px);
         }
 
         .welcome h2 {
-            margin-top: -1.5rem;
-            margin-left: 1rem;
+            padding-left: 20px;
             display: flex;
         }
 
@@ -381,11 +375,11 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            flex-wrap: wrap;
         }
 
         .content {
             flex: 1;
-            /* Pushes footer to the bottom */
         }
 
         .footer {
@@ -398,148 +392,169 @@
         }
 
         @media (max-width: 1200px) {
-            header h1, header p {
+
+            header h1,
+            header p {
                 margin: 1rem 0;
                 text-align: center;
             }
-        
+
             header img {
                 padding-left: 0;
                 margin: auto;
             }
-        
-            .logos img {
-                height: 60px;
-                padding: 0.5rem;
+
+            header .logos img {
+                display: none;
             }
-        
+
             .container .heading h1 {
                 font-size: 2.5rem;
             }
-        
+
             .feed {
                 flex-direction: column;
                 align-items: center;
             }
-        
+
             .card {
                 flex: 0 0 calc(90%);
             }
-        
+
             .card .content .heading {
                 font-size: 24px;
             }
         }
-        
+
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 align-items: center;
                 padding: 15px;
             }
-        
+
             header h1 {
                 font-size: 18px;
             }
-        
+
             header p {
                 font-size: 12px;
             }
-        
-            .logos img {
-                height: 50px;
-                padding: 0.5rem;
+
+            header .logos img {
+                display: none;
             }
-        
+
             .feed {
                 gap: 15px;
             }
-        
+
             .card {
                 flex: 0 0 calc(95%);
             }
-        
+
             .card .content .heading {
                 font-size: 20px;
             }
-        
+
             .card .content .para {
                 font-size: 14px;
             }
         }
-        
+
         @media (max-width: 480px) {
             header img {
-                height: 60px;
+                height: 3rem;
             }
-        
+
+            header .headcontent {
+                line-height: 5px;
+            }
+
             .footer {
                 flex-direction: column;
                 text-align: center;
             }
-        
+
             .footer-logo img {
                 width: 6rem;
                 margin: auto;
             }
-        
+
             .map iframe {
                 width: 90%;
                 height: 12rem;
                 padding: 0;
                 margin: auto;
             }
-        
+
             .quick-links {
                 flex-direction: column;
                 align-items: center;
             }
-        
+
             .quick-links li {
                 margin: 5px 0;
             }
-        
+
             .subscribe {
                 flex-direction: column;
                 align-items: stretch;
             }
-        
+
             .subscribe input {
                 margin-bottom: 5px;
             }
         }
-        
+
+        .containerhead {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+        }
+
+        header .headcontent {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-end;
+            gap: 5px;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <img src="{% static 'img_logo.png' %}" class="slide-up">
-        <div class="slide-up">
-            <h1>Indian Aviation Academy</h1>
-            <p><b>Nurturing Aviation for the Future</b></p>
+        <div class="headcontent">
+            <img src="{% static 'img_logo.png' %}" class="slide-up">
+            <div class="slide-up">
+                <h1>Indian Aviation Academy</h1>
+                <p><b>Nurturing Aviation for the Future</b></p>
+            </div>
         </div>
         <div class="logos">
             <img src="{% static 'logo1.jpg' %}" class="slide-up">
-            <img src="{% static 'logo2.jpg' %}" style="width: 100px; height: 85px;" class="slide-up">
-            <img src="{% static 'logo3.jpg' %}" class="slide-up" style="padding-right: 3rem;">
+            <img src="{% static 'logo2.jpg' %}" class="slide-up">
+            <img src="{% static 'logo3.jpg' %}" class="slide-up">
         </div>
     </header>
     <div class="container">
-        <div class="heading">
-            <h1>FeedBack</h1>
-        </div>
-        {% if messages %}
-        <div>
-            {% for message in messages %}
-            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-                {{ message }}
+        <div class="containerhead">
+            <div class="heading">
+                <h1>FeedBack</h1>
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <div class="welcome">
-            <h2>Welcome, {{ firstname }}!</h2>
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="welcome">
+                <h2>Welcome, {{ firstname }}!</h2>
+            </div>
         </div>
         <button class="Btn">
             <div class="sign"><svg viewBox="0 0 512 512">

@@ -1,4 +1,4 @@
-z{% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -278,12 +278,18 @@ z{% load static %}
                 width: fit-content;
             }
 
+            .iaa {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
             .iaa img {
+                padding-top: 2rem;
                 width: 15%;
             }
 
             .welcomecontainer {
-                padding-left: 2rem;
                 text-align: center;
             }
 
@@ -362,15 +368,24 @@ z{% load static %}
         .container0 {
             display: flex;
             flex-direction: row;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: center;
             gap: 5rem;
+            flex-wrap: wrap;
+            height: 100vh; /* Added to center vertically */
         }
 
-        .submit{
+
+        .submit {
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        @media (max-width: 668px){
+            .container0{
+                gap: 3rem;
+            }
         }
     </style>
 </head>
