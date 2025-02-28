@@ -69,7 +69,6 @@ class Course(models.Model):
 
 class Catering(models.Model):
     trainee = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    catering_name = models.CharField(max_length=255)
     food_quality = models.PositiveSmallIntegerField(validators=[validate_rating])
     service_quality = models.PositiveSmallIntegerField(validators=[validate_rating])
     Cleanliness = models.PositiveSmallIntegerField(validators=[validate_rating])

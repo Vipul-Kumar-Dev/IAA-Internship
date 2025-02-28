@@ -1,4 +1,4 @@
-{% load static %}
+z{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -17,6 +17,9 @@
             position: relative;
             background-color: black;
             font-family: Poppins-Regular, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body::before {
@@ -81,7 +84,6 @@
             align-items: center;
             transform-style: preserve-3d;
             transition: all 1s ease;
-            margin: -27% 21% 0% 0%;
         }
 
         .form .form_front {
@@ -166,7 +168,6 @@
             font-size: 15px;
             font-weight: bold;
             transition: 0.35s;
-            margin: 0rem 0rem 0rem 4.5rem;
         }
 
         .btn:hover {
@@ -206,21 +207,14 @@
             transform: rotateY(-180deg);
         }
 
-        .iaa {
-            display: flex;
-            justify-content: center;
-        }
-
         .iaa img {
-            width: 7.8%;
-            padding: 10rem 53rem 0rem 0rem;
+            width: 7rem;
         }
 
         .welcomecontainer {
             font-size: 15px;
             display: flex;
             flex-direction: column;
-            padding-left: 18rem;
             gap: 3px;
             letter-spacing: 1px;
         }
@@ -286,7 +280,6 @@
 
             .iaa img {
                 width: 15%;
-                padding: 5rem 0rem 0rem 5rem;
             }
 
             .welcomecontainer {
@@ -332,7 +325,6 @@
         @media (max-width: 480px) {
             .iaa img {
                 width: 20%;
-                padding: 4rem 0rem 0rem 2rem;
             }
 
             .welcomecontainer {
@@ -366,64 +358,87 @@
                 font-size: 1.5em;
             }
         }
+
+        .container0 {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 5rem;
+        }
+
+        .submit{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body class="fade-in">
-    <div class="iaa">
-        <img src="{% static 'iialogo-login.png' %}" class="slide-up">
-    </div>
-    <div class="welcomecontainer slide-up">
-        <h1>WELCOME TO</h1>
-        <h2>INDIAN AVIATION ACADEMY</h2><br>
-        <h3>Nurturing Aviation for the Future</h3>
-        <p>Indian Aviation Academy (IAA) is a premier institute for Education,<br>
-            Training, and Research in Aviation. It functions as joint training<br>
-            academy of Airports Authority of India (AAI),Bureau of Civil Aviation<br>
-            Security(BCAS) and Directorate General of Civil Aviation(DGCA).</p>
-        <h4>Copyright 2025 | IAA</h4>
-    </div>
-    <div class="container slide-up">
-        <input type="checkbox" id="signup_toggle">
-        <div class="form">
-            <div class="form_front">
-                <div class="form_details slide-up">Login</div>
-                {% if messages %}
-                <div>
-                    {% for message in messages %}
-                    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <form method="POST" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <input placeholder="Username" class="input slide-up" type="text" name="username" required><br><br>
-                    <input placeholder="Password" class="input slide-up" type="password" name="password"
-                        required><br><br>
-                    <button type="submit" class="btn">Login</button>
-                </form>
-                <span class="switch slide-up">Don't have an account?
-                    <label class="signup_tog" for="signup_toggle">Sign Up</label>
-                </span>
+    <div class="container0">
+        <div class="container1">
+            <div class="iaa">
+                <img src="{% static 'iialogo-login.png' %}" class="slide-up">
             </div>
+            <div class="welcomecontainer slide-up">
+                <h1>WELCOME TO</h1>
+                <h2>INDIAN AVIATION ACADEMY</h2><br>
+                <h3>Nurturing Aviation for the Future</h3>
+                <p>Indian Aviation Academy (IAA) is a premier institute for Education,<br>
+                    Training, and Research in Aviation. It functions as joint training<br>
+                    academy of Airports Authority of India (AAI),Bureau of Civil Aviation<br>
+                    Security(BCAS) and Directorate General of Civil Aviation(DGCA).</p>
+                <h4>Copyright 2025 | IAA</h4>
+            </div>
+        </div>
+        <div class="container slide-up">
+            <input type="checkbox" id="signup_toggle">
+            <div class="form">
+                <div class="form_front">
+                    <div class="form_details slide-up">Login</div>
+                    {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <input placeholder="Username" class="input slide-up" type="text" name="username"
+                            required><br><br>
+                        <input placeholder="Password" class="input slide-up" type="password" name="password"
+                            required><br><br>
+                        <div class="submit">
+                            <button type="submit" class="btn">Login</button>
+                        </div>
+                    </form>
+                    <span class="switch slide-up">Don't have an account?
+                        <label class="signup_tog" for="signup_toggle">Sign Up</label>
+                    </span>
+                </div>
 
-            <div class="form_back">
-                <div class="form_details">Sign Up</div>
-                <form method="POST" action="{% url 'signup' %}">
-                    {% csrf_token %}
-                    <input placeholder="Firstname" class="input" type="text" name="firstname" required><br><br>
-                    <input placeholder="Email Address" class="input" type="email" name="email" required><br><br>
-                    <input placeholder="Username" class="input" type="text" name="username" required><br><br>
-                    <input placeholder="Password" class="input" type="password" name="password" required><br><br>
-                    <input placeholder="Confirm Password" class="input" type="password" name="confirm_password"
-                        required><br><br>
-                    <button type="submit" class="btn">Signup</button><br><br>
-                </form>
-                <span class="switch">Already have an account?
-                    <label class="signup_tog" for="signup_toggle">Sign In</label>
-                </span>
+                <div class="form_back">
+                    <div class="form_details">Sign Up</div>
+                    <form method="POST" action="{% url 'signup' %}">
+                        {% csrf_token %}
+                        <input placeholder="Firstname" class="input" type="text" name="firstname" required><br><br>
+                        <input placeholder="Email Address" class="input" type="email" name="email" required><br><br>
+                        <input placeholder="Username" class="input" type="text" name="username" required><br><br>
+                        <input placeholder="Password" class="input" type="password" name="password" required><br><br>
+                        <input placeholder="Confirm Password" class="input" type="password" name="confirm_password"
+                            required><br><br>
+                        <div class="submit">
+                            <button type="submit" class="btn">Signup</button><br><br>
+                        </div>
+                    </form>
+                    <span class="switch">Already have an account?
+                        <label class="signup_tog" for="signup_toggle">Sign In</label>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

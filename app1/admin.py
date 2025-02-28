@@ -17,7 +17,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ('content', 'instructor', 'materials', 'satisfaction', 'submitted_at')
 
 class CateringAdmin(admin.ModelAdmin):
-    list_display = ('trainee', 'catering_name', 'food_quality', 'service_quality', 'Cleanliness', 'Affordable', 'overall_satisfaction', 'description', 'submitted_at')
+    list_display = ('trainee', 'food_quality', 'service_quality', 'Cleanliness', 'Affordable', 'overall_satisfaction', 'description', 'submitted_at')
     search_fields = ('catering_name', 'trainee__username')
     list_filter = ('food_quality', 'service_quality', 'Cleanliness', 'Affordable', 'overall_satisfaction', 'submitted_at')
 
