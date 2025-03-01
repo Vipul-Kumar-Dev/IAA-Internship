@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 from django.shortcuts import render
 from django.contrib import messages
+import requests
 from .models import Faculty, Infrastructure, Course, Catering
 from django.contrib.auth import authenticate, login, logout, get_user_model
 
@@ -123,6 +124,16 @@ def login_page(request):
 
     return render(request, "login.html")
 
+EMAIL_VERIFICATION_API_KEY = "dc1b4e7595fd4049a2f39e315775177c"
+EMAIL_VERIFICATION_URL = "https://emailvalidation.abstractapi.com/v1/?api_key=dc1b4e7595fd4049a2f39e315775177c&email=vipulsam1234@gmail.com/"
+
+def verify_email(email):
+    response = requests.get(f"{EMAIL_VERIFICATION_URL}?api_key={EMAIL_VERIFICATION_API_KEY}&email={email}")
+    if response.status_code == 200:
+        data = response.json()
+        return data.get("deliverability") == "DELIVERABLE"  # Check if the email exists
+    return False
+
 def signup(request):
     if request.method == "POST":
         firstname = request.POST.get('firstname')
@@ -142,8 +153,13 @@ def signup(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already registered.")
             return redirect('signup')
+
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username is already taken.")
+            return redirect('signup')
+
+        if not verify_email(email):
+            messages.error(request, "Please enter a valid email address.")
             return redirect('signup')
 
         user = User.objects.create_user(
@@ -414,7 +430,7 @@ def contact(request):
             except Exception as e:
                 messages.error(request, "Error sending message. Please try again later.")
 
-        return redirect("contact")  # Redirect back to contact page to show success message
+        return redirect("contact")
 
     return render(request, "contact.html")
 

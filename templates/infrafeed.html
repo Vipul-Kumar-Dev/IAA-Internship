@@ -50,16 +50,15 @@
             padding: 10px;
             display: flex;
             align-items: center;
+            width: -webkit-fill-available;
             justify-content: space-between;
         }
 
         header h1 {
             font-size: 20px;
-            margin: 1rem 0rem 0rem -32.5rem;
         }
 
         header p {
-            margin: 0rem 0rem 0rem -32.5rem;
             font-size: 14px;
         }
 
@@ -87,8 +86,11 @@
             text-shadow: 0px 7px 11px rgba(0, 85, 166, 0.71);
         }
 
-        .feedback-container {
+        .container1 {
             width: 50%;
+        }
+
+        .feedback-container {
             background: linear-gradient(to right, #0055a6, #b2e8ff);
             padding: 2rem;
             border-radius: 12px;
@@ -325,7 +327,12 @@
         }
 
         .footer {
+            display: flex;
             z-index: 10;
+            gap: 30px;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
         }
 
         .footer-section h2 {
@@ -340,21 +347,68 @@
             align-items: center;
         }
 
+        header .headcontent {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
         .form-group select {
             padding: 10px;
             border-radius: 5px;
             font-size: 15px;
             outline: none;
         }
+
+        @media (max-width: 480px) {
+            header .logos {
+                display: none;
+            }
+
+            body {
+                width: fit-content;
+            }
+
+            .container1 {
+                width: -webkit-fill-available;
+                padding: 0rem 2rem;
+            }
+
+            .map iframe {
+                width: 16rem;
+                height: 16rem;
+                border: none;
+                display: flex;
+                padding-left: 2rem;
+            }
+
+            .footer-logo img {
+                padding-left: 2rem;
+            }
+
+            header img {
+                padding-left: 0rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            header .headcontent {
+                margin: auto;
+            }
+        }
     </style>
 </head>
+
 <body>
     <header>
-        <!-- Logo Section -->
-        <img src="{% static 'img_logo.png' %}" class="slide-up">
-        <div class="slide-up">
-            <h1>Indian Aviation Academy</h1>
-            <p><b>Nurturing Aviation for the Future</b></p>
+        <div class="headcontent">
+            <img src="{% static 'img_logo.png' %}" class="slide-up">
+            <div class="slide-up">
+                <h1>Indian Aviation Academy</h1>
+                <p><b>Nurturing Aviation for the Future</b></p>
+            </div>
         </div>
         <div class="logos">
             <img src="{% static 'logo1.jpg' %}" class="slide-up">
@@ -367,6 +421,7 @@
             <div class="heading">
                 <h1>Infrastructure Feedback</h1>
             </div>
+            <div class="container1">
             <div class="feedback-container">
                 <h2>Feedback Form</h2>
                 <form action="{% url 'infrafeed' %}" method="post">
@@ -461,16 +516,15 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
                     <div class="form-group">
                         <label for="comments">Description:</label>
                         <textarea id="comments" name="comments" placeholder="Share your feedback here..."
                             rows="4"></textarea>
                     </div>
 
-                    <!-- Submit Button -->
                     <button type="submit" class="btn">Submit Feedback →</button>
                 </form>
+            </div>
             </div>
         </div>
     </div>
@@ -489,7 +543,7 @@
     <div class="footer-section">
         <h2>Quick Links</h2>
         <ul class="quick-links">
-            <li><a href="#">Contact Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Cookie Policy</a></li>
             <li><a href="#">Website Policies</a></li>
