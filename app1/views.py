@@ -131,7 +131,7 @@ def verify_email(email):
     response = requests.get(f"{EMAIL_VERIFICATION_URL}?api_key={EMAIL_VERIFICATION_API_KEY}&email={email}")
     if response.status_code == 200:
         data = response.json()
-        return data.get("deliverability") == "DELIVERABLE"  # Check if the email exists
+        return data.get("deliverability") == "DELIVERABLE"
     return False
 
 def signup(request):
