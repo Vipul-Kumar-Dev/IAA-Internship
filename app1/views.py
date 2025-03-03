@@ -414,8 +414,8 @@ def contact(request):
         if full_name and user_email and message:
             subject = f"New Contact Form Submission from {full_name}"
             message_body = f"Name: {full_name}\nEmail: {user_email}\nMessage: {message}"
-            from_email = "vipulsam1234@gmail.com"  # Must match SMTP settings
-            recipient_email = ["anas.shaikh7827@gmail.com"]  # IAA Email
+            from_email = "vipulsam1234@gmail.com"
+            recipient_email = ["anas.shaikh7827@gmail.com"]
 
             try:
                 email_message = EmailMessage(
@@ -423,7 +423,7 @@ def contact(request):
                     body=message_body,
                     from_email=from_email,
                     to=recipient_email,
-                    reply_to=[user_email],  # Allows IAA to reply directly to the sender
+                    reply_to=[user_email],
                 )
                 email_message.send()
                 messages.success(request, "Your message has been sent successfully!")
