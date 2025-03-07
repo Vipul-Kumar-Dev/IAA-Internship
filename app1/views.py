@@ -358,7 +358,6 @@ def coursefeed(request):
 @login_required
 def cateringfeed(request):
     if request.method == "POST":
-        catering_name = request.POST.get("catering_name")
         food_quality = request.POST.get("food_quality")
         service_quality = request.POST.get("service_quality")
         Cleanliness = request.POST.get("Cleanliness")
@@ -391,7 +390,6 @@ def cateringfeed(request):
         # Save the feedback
         Catering.objects.create(
             trainee=user_instance,
-            catering_name=catering_name,
             food_quality=food_quality,
             service_quality=service_quality,
             Cleanliness=Cleanliness,

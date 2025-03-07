@@ -82,4 +82,4 @@ class Catering(models.Model):
             self.food_quality + self.service_quality + self.Cleanliness + self.Affordable + self.overall_satisfaction
         ) / 5, 2)
         
-        return f"{self.catering_name} rated {avg_rating}/5 by {self.trainee.username if self.trainee else 'Unknown'}"
+        return f"{self} rated {avg_rating}/5 by {self.trainee.username if self.trainee else 'Unknown'}"
