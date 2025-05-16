@@ -18,7 +18,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 class CateringAdmin(admin.ModelAdmin):
     list_display = ('trainee', 'food_quality', 'service_quality', 'Cleanliness', 'Affordable', 'overall_satisfaction', 'description', 'submitted_at')
-    search_fields = ('catering_name', 'trainee__username')
+    search_fields = ('trainee__username',)
     list_filter = ('food_quality', 'service_quality', 'Cleanliness', 'Affordable', 'overall_satisfaction', 'submitted_at')
 
 admin.site.register(Infrastructure, InfrastructureAdmin)

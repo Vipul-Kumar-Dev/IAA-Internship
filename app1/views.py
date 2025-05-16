@@ -24,12 +24,10 @@ def download_faculty_feedback(request):
     wb = Workbook()
     ws = wb.active
     ws.title = "Faculty Feedbacks"
-    
-    # Create header row
+
     headers = ['Faculty Name', 'Satisfaction', 'Behavior', 'Knowledge', 'Interaction', 'Clarity', 'Response', 'Examples', 'Motivation', 'Comments']
     ws.append(headers)
-    
-    # Add feedback data
+
     for feedback in faculty_feedbacks:
         ws.append([feedback.faculty_name, feedback.satisfaction, feedback.behavior, feedback.knowledge, feedback.interaction, feedback.clarity, feedback.response, feedback.examples, feedback.motivation, feedback.description])
     
@@ -44,12 +42,10 @@ def download_infrastructure_feedback(request):
     wb = Workbook()
     ws = wb.active
     ws.title = "Infrastructure Feedbacks"
-    
-    # Create header row
+
     headers = ['Infrastructure Name', 'Satisfaction', 'Quality', 'Resources', 'Maintenance', 'Safety', 'Comments']
     ws.append(headers)
-    
-    # Add feedback data
+
     for feedback in infrastructure_feedbacks:
         ws.append([feedback.infrastructure_name, feedback.satisfaction, feedback.quality, feedback.resources, feedback.maintenance, feedback.safety, feedback.description])
     
@@ -64,12 +60,10 @@ def download_course_feedback(request):
     wb = Workbook()
     ws = wb.active
     ws.title = "Course Feedbacks"
-    
-    # Create header row
+
     headers = ['Course Name', 'Satisfaction', 'Content', 'Instructor', 'Materials', 'Comments']
     ws.append(headers)
-    
-    # Add feedback data
+
     for feedback in course_feedbacks:
         ws.append([feedback.course_name, feedback.satisfaction, feedback.content, feedback.instructor, feedback.materials, feedback.description])
     
@@ -84,14 +78,12 @@ def download_catering_feedback(request):
     wb = Workbook()
     ws = wb.active
     ws.title = "Catering Feedbacks"
-    
-    # Create header row
+
     headers = ['Catering Name', 'Overall Satisfaction', 'Food Quality', 'Service Quality', 'Cleanliness', 'Affordable', 'Comments']
     ws.append(headers)
-    
-    # Add feedback data
+
     for feedback in catering_feedbacks:
-        ws.append([feedback.catering_name, feedback.overall_satisfaction, feedback.food_quality, feedback.service_quality, feedback.Cleanliness, feedback.Affordable, feedback.description])
+        ws.append([feedback.overall_satisfaction, feedback.food_quality, feedback.service_quality, feedback.Cleanliness, feedback.Affordable, feedback.description])
     
     wb.save(response)
     return response
@@ -210,7 +202,6 @@ def facultyfeed(request):
         satisfaction = request.POST.get("satisfaction")
         description = request.POST.get("comments", "")
 
-        # Validate numeric fields
         try:
             behavior = int(behavior)
             knowledge = int(knowledge)
@@ -221,7 +212,6 @@ def facultyfeed(request):
             motivation = int(motivation)
             satisfaction = int(satisfaction)
 
-            # Ensure values are within range
             for rating in [behavior, knowledge, interaction, clarity, response, examples, motivation, satisfaction]:
                 if rating < 1 or rating > 5:
                     messages.error(request, "Each rating must be between 1 and 5.")
@@ -231,14 +221,12 @@ def facultyfeed(request):
             messages.error(request, "Invalid rating value. Please enter a number between 1 and 5.")
             return redirect('facultyfeed')
 
-        # Fetch the user instance
         try:
             user_instance = User.objects.get(id=request.session.get("user_id"))
         except User.DoesNotExist:
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
-        # Save the feedback
         Faculty.objects.create(
             trainee=user_instance,
             faculty_name=faculty_name,
@@ -291,7 +279,6 @@ def infrafeed(request):
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
-        # Save the feedback
         Infrastructure.objects.create(
             trainee=user_instance,
             infrastructure_name=infrastructure_name,
@@ -339,7 +326,6 @@ def coursefeed(request):
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
-        # Save the feedback
         Course.objects.create(
             trainee=user_instance,
             course_name=course_name,
@@ -387,7 +373,6 @@ def cateringfeed(request):
             messages.error(request, "User not found. Please log in again.")
             return redirect('login')
 
-        # Save the feedback
         Catering.objects.create(
             trainee=user_instance,
             food_quality=food_quality,

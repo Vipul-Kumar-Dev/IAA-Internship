@@ -19,6 +19,8 @@ from django.urls import path
 from django.conf import settings
 from django.views.generic import RedirectView
 from app1 import views as v1
+from app1 import views as bot_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', v1.welcome_page),
