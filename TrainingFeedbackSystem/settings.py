@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 SECRET_KEY = 'django-insecure-_qp65k&$4y0sxf(*3%6!s!u&pv8plbhv$eho)=sm2h%hn21@*$'
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 INSTALLED_APPS = [
     'django.contrib.admin',
